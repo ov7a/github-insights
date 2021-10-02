@@ -8,4 +8,5 @@ Build it with `build` gradle task.
 [Demo](https://ov7a.github.io/github-pr-stats)
 
 Sample output:
+
 ![](screenshot.png)
