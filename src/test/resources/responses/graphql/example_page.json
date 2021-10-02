@@ -1,0 +1,38 @@
+{
+  "data": {
+    "repository": {
+      "pullRequests": {
+        "totalCount": 370,
+        "nodes": [
+          {
+            "url": "https://github.com/octocat/Hello-World/pull/1046",
+            "createdAt": "2011-01-26T19:01:12Z",
+            "updatedAt": "2011-01-26T19:02:12Z",
+            "closedAt": "2011-01-26T19:03:12Z",
+            "mergedAt": "2011-01-26T19:04:12Z",
+            "state": "MERGED"
+          },
+          {
+            "url": "fake_url",
+            "createdAt": "2012-03-27T20:05:45Z",
+            "mergedAt": null,
+            "updatedAt": null,
+            "closedAt": null,
+            "state": "OPEN"
+          },
+          {
+            "url": "fake_url2",
+            "state": "CLOSED",
+            "createdAt": "2011-01-26T19:01:12Z",
+            "updatedAt": "2011-01-26T19:02:12Z",
+            "closedAt": "2011-01-26T19:03:12Z"
+          }
+        ],
+        "pageInfo": {
+          "startCursor": "Y3Vyc29yOnYyOpHOKxqtLA==",
+          "hasPreviousPage": false
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "data": {
+    "repository": {
+      "pullRequests": {
+        "totalCount": 0,
+        "nodes": [],
+        "pageInfo": {
+          "startCursor": null,
+          "hasPreviousPage": false
+        }
+      }
+    }
+  }
+}

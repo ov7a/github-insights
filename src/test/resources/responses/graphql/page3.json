@@ -1,0 +1,21 @@
+{
+  "data": {
+    "repository": {
+      "pullRequests": {
+        "totalCount": 370,
+        "nodes": [
+          {
+            "url": "pull7_url",
+            "state": "CLOSED",
+            "createdAt": "2012-01-28T22:05:45Z",
+            "updatedAt": "2012-02-23T15:15:35Z"
+          }
+        ],
+        "pageInfo": {
+          "startCursor": "iamacursor3",
+          "hasPreviousPage": false
+        }
+      }
+    }
+  }
+}
