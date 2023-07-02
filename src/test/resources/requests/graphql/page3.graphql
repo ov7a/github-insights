@@ -2,7 +2,9 @@
   repository(name: "Hello-World", owner: "octocat") {
     pullRequests(last: 100, before: "iamacursor2") {
       totalCount
-      nodes { url, createdAt, mergedAt, updatedAt, closedAt, state }
+      nodes {
+        url, createdAt, mergedAt, closedAt
+      }
       pageInfo { startCursor, hasPreviousPage }
     }
   }

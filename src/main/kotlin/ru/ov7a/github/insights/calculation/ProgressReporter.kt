@@ -1,23 +1,22 @@
 package ru.ov7a.github.insights.calculation
 
-import ru.ov7a.github.insights.domain.PullRequestsBatch
+import ru.ov7a.github.insights.domain.DataBatch
 
 open class ProgressReporter {
 
     open suspend fun report(value: Double) {
-        //by default, do nothing
+        // by default, do nothing
     }
 
     var count: Int = 0
         private set
 
-    suspend fun consume(pullRequestsBatch: PullRequestsBatch) {
-        count += pullRequestsBatch.pullRequests.size
-        if (pullRequestsBatch.totalCount != 0) {
-            report(count.toDouble() / pullRequestsBatch.totalCount)
+    suspend fun consume(dataBatch: DataBatch) {
+        count += dataBatch.data.size
+        if (dataBatch.totalCount != 0) {
+            report(count.toDouble() / dataBatch.totalCount)
         } else {
             report(1.0)
         }
     }
-
 }

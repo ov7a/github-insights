@@ -7,21 +7,20 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.toList
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
-import ru.ov7a.github.insights.domain.PullRequest
-import ru.ov7a.github.insights.domain.PullRequestsStats
+import ru.ov7a.github.insights.domain.IssueLike
 import ru.ov7a.github.insights.domain.Statistic
+import ru.ov7a.github.insights.domain.Stats
 
 @ExperimentalTime
-fun getDuration(pullRequest: PullRequest, now: Instant): Duration =
-    (pullRequest.closedAt ?: pullRequest.mergedAt ?: now) - pullRequest.createdAt
-
+fun getDuration(issueLike: IssueLike, now: Instant): Duration =
+    (issueLike.closedAt ?: now) - issueLike.createdAt
 
 @OptIn(ExperimentalTime::class)
 suspend fun calculateDurationStats(
-    pullRequests: Flow<PullRequest>,
+    data: Flow<IssueLike>,
     now: Instant = Clock.System.now()
-): PullRequestsStats? {
-    val durations = pullRequests.map { pullRequest -> getDuration(pullRequest, now) }
+): Stats? {
+    val durations = data.map { issueLike -> getDuration(issueLike, now) }
 
     return getStats(durations)
 }
@@ -45,7 +44,7 @@ private val statsGetters = listOf<Pair<String, (List<Duration>) -> Duration>>(
 )
 
 @ExperimentalTime
-suspend fun getStats(durations: Flow<Duration>): PullRequestsStats? {
+suspend fun getStats(durations: Flow<Duration>): Stats? {
     val sortedDurations = durations.toList().sorted()
 
     if (sortedDurations.isEmpty()) {

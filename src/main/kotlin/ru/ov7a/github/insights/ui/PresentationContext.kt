@@ -11,7 +11,8 @@ import kotlinx.html.tbody
 import kotlinx.html.td
 import kotlinx.html.tr
 import org.w3c.dom.HTMLTableElement
-import ru.ov7a.github.insights.domain.PullRequestsStats
+import ru.ov7a.github.insights.domain.Stats
+import ru.ov7a.github.insights.fetcher.graphql.GraphQLError
 
 @OptIn(ExperimentalTime::class)
 class PresentationContext {
@@ -27,7 +28,7 @@ class PresentationContext {
         failureResultBlock.hide()
     }
 
-    fun present(result: Result<PullRequestsStats?>) {
+    fun present(result: Result<Stats?>) {
         progressBarBlock.hide()
 
         when {
@@ -36,10 +37,10 @@ class PresentationContext {
         }
     }
 
-    private fun presentSuccess(pullRequestsStats: PullRequestsStats?) {
-        if (pullRequestsStats != null) {
+    private fun presentSuccess(stats: Stats?) {
+        if (stats != null) {
             successResultBlock.apply {
-                setContent(generateResultsHtml(pullRequestsStats))
+                setContent(generateResultsHtml(stats))
                 show()
             }
         } else {
@@ -47,10 +48,10 @@ class PresentationContext {
         }
     }
 
-    private fun generateResultsHtml(pullRequestsStats: PullRequestsStats): HTMLTableElement =
+    private fun generateResultsHtml(stats: Stats): HTMLTableElement =
         document.create.table {
             tbody {
-                pullRequestsStats.map { stat ->
+                stats.map { stat ->
                     tr {
                         td { +stat.displayName }
                         td {
@@ -69,7 +70,8 @@ class PresentationContext {
             setContent(
                 document.create.span {
                     +when (exception) {
-                        is ClientRequestException -> "Error during fetching pull requests data: ${exception.response.status.description}"
+                        is ClientRequestException -> "Error during fetching data: ${exception.response.status.description}"
+                        is GraphQLError -> "Error during fetching data: ${exception.message}"
                         else -> "Error happened: ${exception?.message ?: "Unknown error"}"
                     }
                 }

@@ -3,9 +3,8 @@ package ru.ov7a.github.insights.calculation
 import io.kotest.matchers.shouldBe
 import kotlin.test.Test
 import kotlinx.datetime.Clock
-import ru.ov7a.github.insights.domain.PullRequest
-import ru.ov7a.github.insights.domain.PullRequestState
-import ru.ov7a.github.insights.domain.PullRequestsBatch
+import ru.ov7a.github.insights.domain.DataBatch
+import ru.ov7a.github.insights.domain.IssueLike
 import ru.ov7a.github.insights.runTest
 
 class ProgressReporterTests {
@@ -17,9 +16,9 @@ class ProgressReporterTests {
         }
     }
 
-    private fun pullRequestsBatch(total: Int, size: Int) = PullRequestsBatch(
+    private fun pullRequestsBatch(total: Int, size: Int) = DataBatch(
         totalCount = total,
-        pullRequests = List(size) { PullRequest("url", PullRequestState.OPEN, Clock.System.now()) }
+        data = List(size) { IssueLike(url = "url", createdAt = Clock.System.now()) }
     )
 
     @Test

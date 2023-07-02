@@ -17,9 +17,8 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.toList
 import kotlinx.datetime.Instant
 import ru.ov7a.github.insights.Endpoint
-import ru.ov7a.github.insights.domain.PullRequest
-import ru.ov7a.github.insights.domain.PullRequestState
-import ru.ov7a.github.insights.domain.PullRequestsBatch
+import ru.ov7a.github.insights.domain.DataBatch
+import ru.ov7a.github.insights.domain.IssueLike
 import ru.ov7a.github.insights.domain.RepositoryId
 import ru.ov7a.github.insights.fetcher.withMockEngine
 import ru.ov7a.github.insights.loadResource
@@ -68,27 +67,21 @@ class GraphQLPullRequestsClientTests {
         }
 
         result shouldBe listOf(
-            PullRequestsBatch(
+            DataBatch(
                 totalCount = 370,
-                pullRequests = listOf(
-                    PullRequest(
+                data = listOf(
+                    IssueLike(
                         url = "https://github.com/octocat/Hello-World/pull/1046",
-                        state = PullRequestState.MERGED,
                         createdAt = Instant.fromEpochMilliseconds(1296068472_000),
-                        updatedAt = Instant.fromEpochMilliseconds(1296068532_000),
                         closedAt = Instant.fromEpochMilliseconds(1296068592_000),
-                        mergedAt = Instant.fromEpochMilliseconds(1296068652_000)
                     ),
-                    PullRequest(
+                    IssueLike(
                         url = "fake_url",
-                        state = PullRequestState.OPEN,
                         createdAt = Instant.fromEpochMilliseconds(1332878745_000)
                     ),
-                    PullRequest(
+                    IssueLike(
                         url = "fake_url2",
-                        state = PullRequestState.CLOSED,
                         createdAt = Instant.fromEpochMilliseconds(1296068472_000),
-                        updatedAt = Instant.fromEpochMilliseconds(1296068532_000),
                         closedAt = Instant.fromEpochMilliseconds(1296068592_000),
                     ),
                 ),
@@ -120,7 +113,7 @@ class GraphQLPullRequestsClientTests {
         }
 
         result shouldHaveSize 3
-        result.flatMap { it.pullRequests } shouldHaveSize 7
+        result.flatMap { it.data } shouldHaveSize 7
     }
 
     @Test

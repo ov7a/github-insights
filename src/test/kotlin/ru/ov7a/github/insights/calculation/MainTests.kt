@@ -1,6 +1,7 @@
 package ru.ov7a.github.insights.calculation
 
 import getAndCalculateStats
+import io.kotest.assertions.withClue
 import io.kotest.matchers.should
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.beInstanceOf
@@ -40,8 +41,9 @@ class MainTests {
             authHeader,
             reporter
         )
-
-        result.isSuccess shouldBe true
+        withClue(result) {
+            result.isSuccess shouldBe true
+        }
         val stats = result.getOrNull()
         stats?.size shouldBe 14 + 1
         stats?.last() shouldBe Statistic("Total count", 7)

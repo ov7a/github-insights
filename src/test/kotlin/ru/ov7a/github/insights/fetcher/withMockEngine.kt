@@ -4,10 +4,11 @@ import io.ktor.client.HttpClient
 import io.ktor.client.engine.mock.MockEngine
 import io.ktor.client.engine.mock.MockEngineConfig
 import io.ktor.client.engine.mock.MockRequestHandler
+import ru.ov7a.github.insights.fetcher.graphql.pulls.PullRequestsClient
 
 suspend fun <T> withMockEngine(
     vararg handlers: MockRequestHandler,
-    action: suspend PullRequestsClient.() -> T
+    action: suspend Client.() -> T
 ): T {
     val client = createClientWithMocks(*handlers)
     return client.action()
@@ -15,7 +16,8 @@ suspend fun <T> withMockEngine(
 
 fun createClientWithMocks(
     vararg handlers: MockRequestHandler
-): PullRequestsClient {
+): Client {
     val engine = MockEngine(MockEngineConfig().apply { requestHandlers.addAll(handlers) })
-    return PullRequestsClient { block -> HttpClient(engine, block) }
+    val jsonClient = JsonClient { block -> HttpClient(engine, block) }
+    return PullRequestsClient(jsonClient)
 }

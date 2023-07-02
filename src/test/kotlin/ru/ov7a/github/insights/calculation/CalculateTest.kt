@@ -6,41 +6,30 @@ import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.ExperimentalTime
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.datetime.Instant
-import ru.ov7a.github.insights.domain.PullRequest
-import ru.ov7a.github.insights.domain.PullRequestState
+import ru.ov7a.github.insights.domain.IssueLike
 import ru.ov7a.github.insights.domain.Statistic
 import ru.ov7a.github.insights.runTest
 
 @ExperimentalTime
-@Suppress("EXPERIMENTAL_API_USAGE_FUTURE_ERROR")
 class CalculateTest {
 
     @Test
     fun should_calculate_result() = runTest {
         val pulls = flowOf(
-            PullRequest(
-                "don't care",
-                PullRequestState.OPEN,
-                createdAt = Instant.fromEpochMilliseconds(1000)
+            create(
+                createdAt = 1000
             ),
-            PullRequest(
-                "don't care",
-                PullRequestState.CLOSED,
-                createdAt = Instant.fromEpochMilliseconds(2000),
-                mergedAt = Instant.fromEpochMilliseconds(3500)
+            create(
+                createdAt = 2000,
+                closedAt = 3500
             ),
-            PullRequest(
-                "don't care",
-                PullRequestState.CLOSED,
-                createdAt = Instant.fromEpochMilliseconds(4000),
-                closedAt = Instant.fromEpochMilliseconds(4500)
+            create(
+                createdAt = 4000,
+                closedAt = 4500
             ),
-            PullRequest(
-                "don't care",
-                PullRequestState.CLOSED,
-                createdAt = Instant.fromEpochMilliseconds(3000),
-                closedAt = Instant.fromEpochMilliseconds(4000),
-                mergedAt = Instant.fromEpochMilliseconds(5000)
+            create(
+                createdAt = 3000,
+                closedAt = 4000
             )
         )
         //Durations: 5000, 1500, 500, 1000
@@ -68,4 +57,13 @@ class CalculateTest {
         val result = calculateDurationStats(flowOf())
         result shouldBe null
     }
+
+    private fun create(
+        createdAt: Long,
+        closedAt: Long? = null,
+    ) = IssueLike(
+        createdAt = Instant.fromEpochMilliseconds(createdAt),
+        closedAt = closedAt?.let { Instant.fromEpochMilliseconds(it) },
+        url = "don't care",
+    )
 }
