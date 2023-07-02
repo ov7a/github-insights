@@ -4,9 +4,7 @@ plugins {
 }
 
 repositories {
-    jcenter()
     mavenCentral()
-    maven { url = uri("https://dl.bintray.com/kotlin/kotlinx") }
 }
 
 val ktorVersion = "1.6.3"

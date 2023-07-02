@@ -1,2 +1,2 @@
-rootProject.name = "github_pr_stats"
+rootProject.name = "github_insights"
 

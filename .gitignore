@@ -3,6 +3,7 @@ build/*
 gradle/*
 .gradle/*
 gradlew*
+kotlin-js-store/*
 
 !build/distributions
 !build/distributions/*
