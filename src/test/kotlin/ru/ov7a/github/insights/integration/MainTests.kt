@@ -1,4 +1,4 @@
-package ru.ov7a.github.insights.calculation
+package ru.ov7a.github.insights.integration
 
 import getAndCalculateStats
 import io.kotest.assertions.withClue
@@ -6,9 +6,12 @@ import io.kotest.matchers.should
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.beInstanceOf
 import io.ktor.client.plugins.ClientRequestException
-import io.ktor.http.*
+import io.ktor.http.ContentType
+import io.ktor.http.HttpHeaders
+import io.ktor.http.HttpStatusCode
 import kotlin.test.Test
 import kotlin.time.ExperimentalTime
+import ru.ov7a.github.insights.calculation.ProgressReporter
 import ru.ov7a.github.insights.domain.RepositoryId
 import ru.ov7a.github.insights.domain.Statistic
 import ru.ov7a.github.insights.fetcher.createClientWithMocks
@@ -63,7 +66,9 @@ class MainTests {
             authHeader,
             reporter
         )
-        result.isFailure shouldBe true
+        withClue(result) {
+            result.isFailure shouldBe true
+        }
         result.exceptionOrNull() should beInstanceOf<ClientRequestException>()
     }
 
@@ -81,7 +86,9 @@ class MainTests {
             reporter
         )
 
-        result.isSuccess shouldBe true
+        withClue(result) {
+            result.isSuccess shouldBe true
+        }
         result.getOrNull() shouldBe null
     }
 }
