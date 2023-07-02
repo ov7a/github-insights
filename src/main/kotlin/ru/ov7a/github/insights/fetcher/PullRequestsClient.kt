@@ -12,7 +12,6 @@ import kotlinx.coroutines.flow.Flow
 import ru.ov7a.github.insights.domain.PullRequestsBatch
 import ru.ov7a.github.insights.domain.RepositoryId
 import ru.ov7a.github.insights.fetcher.graphql.GraphQLPullRequestsClient
-import ru.ov7a.github.insights.fetcher.rest.RestPullRequestsClient
 
 class PullRequestsClient(
     clientBuilder: (HttpClientConfig<*>.() -> Unit) -> HttpClient = ::HttpClient
@@ -26,15 +25,10 @@ class PullRequestsClient(
         }
     }
 
-    private val restPullRequestsClient = RestPullRequestsClient(client)
     private val graphQLPullRequestsClient = GraphQLPullRequestsClient(client)
 
     @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
-    suspend fun fetchAll(repositoryId: RepositoryId, authorizationHeader: String? = null): Flow<PullRequestsBatch> =
-        if (authorizationHeader != null) {
-            graphQLPullRequestsClient.fetchAll(repositoryId, authorizationHeader)
-        } else {
-            restPullRequestsClient.fetchAll(repositoryId)
-        }
+    suspend fun fetchAll(repositoryId: RepositoryId, authorizationHeader: String): Flow<PullRequestsBatch> =
+        graphQLPullRequestsClient.fetchAll(repositoryId, authorizationHeader)
 
 }

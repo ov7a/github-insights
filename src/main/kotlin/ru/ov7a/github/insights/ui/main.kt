@@ -41,6 +41,9 @@ fun calculateAndPresent() = catchValidationError {
     val repositoryId = context.repositoryId.getRepositoryId() ?: throw ValidationException(
         "Can't parse input. Please, provide it as url to repository or as %user%/%repositoryName%"
     )
+    val authorization = context.authorization.getAuthorization() ?: throw ValidationException(
+        "Please, authorize"
+    )
 
     context.presentation.setLoading()
 
@@ -50,7 +53,7 @@ fun calculateAndPresent() = catchValidationError {
         val result = getAndCalculateStats(
             context.pullRequestsClient,
             repositoryId,
-            context.authorization.getAuthorization(),
+            authorization,
             reporter
         )
 

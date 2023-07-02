@@ -13,7 +13,7 @@ import ru.ov7a.github.insights.fetcher.PullRequestsClient
 suspend fun getAndCalculateStats(
     client: PullRequestsClient,
     repositoryId: RepositoryId,
-    authorizationHeader: String?,
+    authorizationHeader: String,
     progressReporter: ru.ov7a.github.insights.calculation.ProgressReporter
 ): Result<PullRequestsStats?> {
     val pullRequests = client.fetchAll(repositoryId, authorizationHeader).onEach {
