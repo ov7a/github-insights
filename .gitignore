@@ -7,3 +7,4 @@ kotlin-js-store/*
 
 !build/distributions
 !build/distributions/*
+!gradle/wrapper/gradle-wrapper.properties

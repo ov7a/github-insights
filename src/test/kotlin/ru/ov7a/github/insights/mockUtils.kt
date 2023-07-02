@@ -1,10 +1,17 @@
 package ru.ov7a.github.insights
 
 import io.kotest.matchers.shouldBe
-import io.ktor.client.engine.mock.*
-import io.ktor.http.*
-import io.ktor.http.content.*
-import io.ktor.util.*
+import io.ktor.client.engine.mock.MockRequestHandler
+import io.ktor.client.engine.mock.respond
+import io.ktor.http.Headers
+import io.ktor.http.HeadersImpl
+import io.ktor.http.HttpMethod
+import io.ktor.http.HttpStatusCode
+import io.ktor.http.URLBuilder
+import io.ktor.http.Url
+import io.ktor.http.content.OutgoingContent
+import io.ktor.http.headersOf
+import io.ktor.http.takeFrom
 import org.w3c.xhr.XMLHttpRequest
 
 data class Endpoint(
@@ -12,7 +19,6 @@ data class Endpoint(
     val method: HttpMethod = HttpMethod.Get,
     val headers: Headers = headersOf(),
 ) {
-    @OptIn(InternalAPI::class)
     constructor(
         url: String,
         method: HttpMethod = HttpMethod.Get,
@@ -59,7 +65,6 @@ fun mockResponse(
     }
 }
 
-@OptIn(InternalAPI::class)
 fun response(
     content: String,
     statusCode: HttpStatusCode = HttpStatusCode.OK,

@@ -2,7 +2,7 @@ package ru.ov7a.github.insights.calculation
 
 import io.kotest.matchers.shouldBe
 import kotlin.test.Test
-import kotlin.time.Duration
+import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.ExperimentalTime
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.datetime.Instant
@@ -46,20 +46,20 @@ class CalculateTest {
         //Durations: 5000, 1500, 500, 1000
         val result = calculateDurationStats(pulls, now = Instant.fromEpochMilliseconds(6000))
         result shouldBe listOf(
-            Statistic("0th percentile (minimum)", Duration.milliseconds(500)),
-            Statistic("10th percentile", Duration.milliseconds(650)),
-            Statistic("20th percentile", Duration.milliseconds(800)),
-            Statistic("30th percentile", Duration.milliseconds(950)),
-            Statistic("40th percentile", Duration.milliseconds(1100)),
-            Statistic("50th percentile (mean)", Duration.milliseconds(1250)),
-            Statistic("60th percentile", Duration.milliseconds(1400)),
-            Statistic("70th percentile", Duration.milliseconds(1850)),
-            Statistic("80th percentile", Duration.milliseconds(2900)),
-            Statistic("90th percentile", Duration.milliseconds(3950)),
-            Statistic("95th percentile", Duration.milliseconds(4475)),
-            Statistic("99th percentile", Duration.milliseconds(4895)),
-            Statistic("100th percentile (maximum)", Duration.milliseconds(5000)),
-            Statistic("Average", Duration.milliseconds(2000)),
+            Statistic("0th percentile (minimum)", 500.milliseconds),
+            Statistic("10th percentile", 650.milliseconds),
+            Statistic("20th percentile", 800.milliseconds),
+            Statistic("30th percentile", 950.milliseconds),
+            Statistic("40th percentile", 1100.milliseconds),
+            Statistic("50th percentile (mean)", 1250.milliseconds),
+            Statistic("60th percentile", 1400.milliseconds),
+            Statistic("70th percentile", 1850.milliseconds),
+            Statistic("80th percentile", 2900.milliseconds),
+            Statistic("90th percentile", 3950.milliseconds),
+            Statistic("95th percentile", 4475.milliseconds),
+            Statistic("99th percentile", 4895.milliseconds),
+            Statistic("100th percentile (maximum)", 5000.milliseconds),
+            Statistic("Average", 2000.milliseconds),
         )
     }
 

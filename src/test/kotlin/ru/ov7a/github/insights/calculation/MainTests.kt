@@ -4,7 +4,7 @@ import getAndCalculateStats
 import io.kotest.matchers.should
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.beInstanceOf
-import io.ktor.client.features.*
+import io.ktor.client.plugins.ClientRequestException
 import io.ktor.http.*
 import kotlin.test.Test
 import kotlin.time.ExperimentalTime
@@ -32,7 +32,7 @@ class MainTests {
             response("page3"),
         )
 
-        val reporter = ru.ov7a.github.insights.calculation.ProgressReporter()
+        val reporter = ProgressReporter()
 
         val result = getAndCalculateStats(
             client,
@@ -53,7 +53,7 @@ class MainTests {
             response(content = "", statusCode = HttpStatusCode.NotFound)
         )
 
-        val reporter = ru.ov7a.github.insights.calculation.ProgressReporter()
+        val reporter = ProgressReporter()
 
         val result = getAndCalculateStats(
             client,
@@ -70,7 +70,7 @@ class MainTests {
         val client = createClientWithMocks(
             response("page_empty")
         )
-        val reporter = ru.ov7a.github.insights.calculation.ProgressReporter()
+        val reporter = ProgressReporter()
 
         val result = getAndCalculateStats(
             client,

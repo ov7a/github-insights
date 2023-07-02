@@ -1,14 +1,13 @@
 package ru.ov7a.github.insights.fetcher.graphql
 
 import io.ktor.client.HttpClient
+import io.ktor.client.call.body
 import io.ktor.client.request.headers
 import io.ktor.client.request.post
+import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
-import io.ktor.http.URLProtocol
 import io.ktor.http.contentType
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import ru.ov7a.github.insights.domain.PullRequestsBatch
@@ -22,18 +21,13 @@ class GraphQLPullRequestsClient(
         cursor: String?,
         authorizationHeader: String
     ): GraphQLPullRequestsResponse {
-        val response: GraphQLPullRequestsResponse = client.post(
-            scheme = URLProtocol.HTTPS.name,
-            host = HOST,
-            path = PATH,
-        ) {
-            body = createPullRequestsQuery(repositoryId, cursor)
+        return client.post(GRAPH_QL_URL) {
+            contentType(ContentType.Application.Json)
+            setBody(createPullRequestsQuery(repositoryId, cursor))
             headers {
-                contentType(ContentType.Application.Json)
                 append(HttpHeaders.Authorization, authorizationHeader)
             }
-        }
-        return response
+        }.body()
     }
 
     private fun GraphQLPullRequestsResponse.toBatch() = PullRequestsBatch(
@@ -41,7 +35,6 @@ class GraphQLPullRequestsClient(
         pullRequests = this.data.repository.pullRequests.nodes
     )
 
-    @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
     suspend fun fetchAll(repositoryId: RepositoryId, authorizationHeader: String): Flow<PullRequestsBatch> =
         flow {
             var cursor: String? = null
@@ -53,7 +46,6 @@ class GraphQLPullRequestsClient(
         }
 
     private companion object {
-        const val HOST = "api.github.com"
-        const val PATH = "/graphql"
+        const val GRAPH_QL_URL = "https://api.github.com/graphql"
     }
 }

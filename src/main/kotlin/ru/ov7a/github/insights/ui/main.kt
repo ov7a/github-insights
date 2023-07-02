@@ -11,7 +11,6 @@ import ru.ov7a.github.insights.ui.RepositoryIdContext.Companion.REPO_QUERY_PARAM
 
 private val context = Context()
 
-@OptIn(DelicateCoroutinesApi::class)
 fun main() {
     window.onerror = { message, _, _, _, _ ->
         window.alert(message)
@@ -36,7 +35,7 @@ fun init() {
 }
 
 @JsExport
-@OptIn(DelicateCoroutinesApi::class, ExperimentalTime::class)
+@OptIn(DelicateCoroutinesApi::class, ExperimentalJsExport::class, ExperimentalTime::class)
 fun calculateAndPresent() = catchValidationError {
     val repositoryId = context.repositoryId.getRepositoryId() ?: throw ValidationException(
         "Can't parse input. Please, provide it as url to repository or as %user%/%repositoryName%"
@@ -61,11 +60,13 @@ fun calculateAndPresent() = catchValidationError {
     }
 }
 
+@OptIn(ExperimentalJsExport::class)
 @JsExport
 fun storeAuthorization() = catchValidationError {
     context.authorization.saveAuthorization()
 }
 
+@OptIn(ExperimentalJsExport::class)
 @JsExport
 fun resetAuthorization() {
     context.authorization.resetAuthorization()

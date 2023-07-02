@@ -1,6 +1,6 @@
 package ru.ov7a.github.insights.ui
 
-import io.ktor.client.features.*
+import io.ktor.client.plugins.ClientRequestException
 import kotlin.time.Duration
 import kotlin.time.ExperimentalTime
 import kotlinx.browser.document

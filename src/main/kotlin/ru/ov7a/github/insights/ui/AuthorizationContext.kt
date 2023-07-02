@@ -26,7 +26,7 @@ class AuthorizationContext {
         if (user.isBlank() || token.isBlank()) {
             throw ValidationException("Please, fill both github user name and token")
         }
-        val authorizationHeader = constructBasicAuthValue(user, token)
+        val authorizationHeader: String = constructBasicAuthValue(user, token)
         Cookies.set(AUTH_DATA_COOKIE, authorizationHeader, cookieAttrs)
         updateVisibility()
     }

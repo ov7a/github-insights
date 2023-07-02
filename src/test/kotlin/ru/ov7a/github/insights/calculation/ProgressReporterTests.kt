@@ -9,7 +9,7 @@ import ru.ov7a.github.insights.domain.PullRequestsBatch
 import ru.ov7a.github.insights.runTest
 
 class ProgressReporterTests {
-    private fun reporter() = object : ru.ov7a.github.insights.calculation.ProgressReporter() {
+    private fun reporter() = object : ProgressReporter() {
         var lastReported: Double? = null
 
         override suspend fun report(value: Double) {

@@ -1,5 +1,5 @@
 import kotlin.time.ExperimentalTime
-import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.flatMapConcat
 import kotlinx.coroutines.flow.onEach
@@ -9,7 +9,7 @@ import ru.ov7a.github.insights.domain.RepositoryId
 import ru.ov7a.github.insights.domain.Statistic
 import ru.ov7a.github.insights.fetcher.PullRequestsClient
 
-@OptIn(ExperimentalTime::class, FlowPreview::class)
+@OptIn(ExperimentalCoroutinesApi::class, ExperimentalTime::class)
 suspend fun getAndCalculateStats(
     client: PullRequestsClient,
     repositoryId: RepositoryId,
