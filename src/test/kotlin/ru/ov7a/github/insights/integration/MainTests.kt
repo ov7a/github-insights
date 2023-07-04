@@ -15,6 +15,7 @@ import ru.ov7a.github.insights.calculation.ProgressReporter
 import ru.ov7a.github.insights.domain.RepositoryId
 import ru.ov7a.github.insights.domain.Statistic
 import ru.ov7a.github.insights.fetcher.createClientWithMocks
+import ru.ov7a.github.insights.fetcher.graphql.pulls.PullRequestsClient
 import ru.ov7a.github.insights.loadResource
 import ru.ov7a.github.insights.response
 import ru.ov7a.github.insights.runTest
@@ -31,9 +32,10 @@ class MainTests {
     @Test
     fun should_collect_stats() = runTest {
         val client = createClientWithMocks(
-            response("page1"),
-            response("page2"),
-            response("page3"),
+            { PullRequestsClient(it) },
+            response("pulls/page1"),
+            response("pulls/page2"),
+            response("pulls/page3"),
         )
 
         val reporter = ProgressReporter()
@@ -55,6 +57,7 @@ class MainTests {
     @Test
     fun should_catch_error() = runTest {
         val client = createClientWithMocks(
+            { PullRequestsClient(it) },
             response(content = "", statusCode = HttpStatusCode.NotFound)
         )
 
@@ -75,7 +78,8 @@ class MainTests {
     @Test
     fun should_process_empty_result() = runTest {
         val client = createClientWithMocks(
-            response("page_empty")
+            { PullRequestsClient(it) },
+            response("pulls/page_empty")
         )
         val reporter = ProgressReporter()
 

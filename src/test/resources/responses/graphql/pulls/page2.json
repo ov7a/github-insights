@@ -6,18 +6,15 @@
         "nodes": [
           {
             "url": "pull4_url",
-            "state": "OPEN",
             "createdAt": "2012-03-28T20:05:45Z"
           },
           {
             "url": "pull5_url",
-            "state": "CLOSED",
             "createdAt": "2012-03-30T20:05:45Z",
             "closedAt": "2012-04-30T10:05:17Z"
           },
           {
             "url": "pull6_url",
-            "state": "MERGED",
             "createdAt": "2012-02-10T21:05:45Z",
             "mergedAt": "2012-02-11T11:05:17Z"
           }

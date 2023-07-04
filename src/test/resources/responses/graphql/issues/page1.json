@@ -1,22 +1,19 @@
 {
   "data": {
     "repository": {
-      "pullRequests": {
+      "issues": {
         "totalCount": 370,
         "nodes": [
           {
-            "url": "pull1_url",
-            "state": "OPEN",
+            "url": "issue1_url",
             "createdAt": "2012-03-28T20:05:45Z"
           },
           {
-            "url": "pull2_url",
-            "state": "OPEN",
+            "url": "issue2_url",
             "createdAt": "2012-03-30T20:06:45Z"
           },
           {
-            "url": "pull3_url",
-            "state": "OPEN",
+            "url": "issue3_url",
             "createdAt": "2012-03-30T20:07:45Z"
           }
         ],

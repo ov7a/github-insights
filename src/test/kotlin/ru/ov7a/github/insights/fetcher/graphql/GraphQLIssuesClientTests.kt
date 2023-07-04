@@ -9,14 +9,13 @@ import ru.ov7a.github.insights.domain.IssueLike
 import ru.ov7a.github.insights.domain.RepositoryId
 import ru.ov7a.github.insights.fetcher.Client
 import ru.ov7a.github.insights.fetcher.JsonClient
-import ru.ov7a.github.insights.fetcher.graphql.pulls.PullRequestsClient
+import ru.ov7a.github.insights.fetcher.graphql.issues.IssuesClient
 import ru.ov7a.github.insights.runTest
 
-class GraphQLPullRequestsClientTests : AbstractGraphQLClientTests() {
+class GraphQLIssuesClientTests : AbstractGraphQLClientTests() {
 
-    override fun createClient(jsonClient: JsonClient): Client = PullRequestsClient(jsonClient)
-
-    override val dataDir = "pulls"
+    override fun createClient(jsonClient: JsonClient): Client = IssuesClient(jsonClient)
+    override val dataDir = "issues"
 
     @Test
     fun should_fetch_single_page_properly() = runTest {
@@ -32,7 +31,7 @@ class GraphQLPullRequestsClientTests : AbstractGraphQLClientTests() {
                 totalCount = 370,
                 data = listOf(
                     IssueLike(
-                        url = "https://github.com/octocat/Hello-World/pull/1046",
+                        url = "https://github.com/octocat/Hello-World/issue/1046",
                         createdAt = Instant.fromEpochMilliseconds(1296068472_000),
                         closedAt = Instant.fromEpochMilliseconds(1296068592_000),
                     ),

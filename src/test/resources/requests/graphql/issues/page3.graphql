@@ -1,0 +1,11 @@
+{
+  repository(name: "Hello-World", owner: "octocat") {
+    issues(last: 100, before: "iamacursor2") {
+      totalCount
+      nodes {
+        url, createdAt, closedAt
+      }
+      pageInfo { startCursor, hasPreviousPage }
+    }
+  }
+}

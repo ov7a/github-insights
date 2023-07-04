@@ -1,0 +1,11 @@
+{
+  repository(name: "non-existing", owner: "octocat") {
+    issues(last: 100) {
+      totalCount
+      nodes {
+        url, createdAt, closedAt
+      }
+      pageInfo { startCursor, hasPreviousPage }
+    }
+  }
+}

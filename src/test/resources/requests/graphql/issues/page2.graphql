@@ -1,0 +1,11 @@
+{
+  repository(name: "Hello-World", owner: "octocat") {
+    issues(last: 100, before: "Y3Vyc29yOnYyOpHOKxqtLA==") {
+      totalCount
+      nodes {
+        url, createdAt, closedAt
+      }
+      pageInfo { startCursor, hasPreviousPage }
+    }
+  }
+}

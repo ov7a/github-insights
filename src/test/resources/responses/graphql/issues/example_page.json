@@ -1,0 +1,30 @@
+{
+  "data": {
+    "repository": {
+      "issues": {
+        "totalCount": 370,
+        "nodes": [
+          {
+            "url": "https://github.com/octocat/Hello-World/issue/1046",
+            "createdAt": "2011-01-26T19:01:12Z",
+            "closedAt": "2011-01-26T19:03:12Z"
+          },
+          {
+            "url": "fake_url",
+            "createdAt": "2012-03-27T20:05:45Z",
+            "closedAt": null
+          },
+          {
+            "url": "fake_url2",
+            "createdAt": "2011-01-26T19:01:12Z",
+            "closedAt": "2011-01-26T19:03:12Z"
+          }
+        ],
+        "pageInfo": {
+          "startCursor": "Y3Vyc29yOnYyOpHOKxqtLA==",
+          "hasPreviousPage": false
+        }
+      }
+    }
+  }
+}

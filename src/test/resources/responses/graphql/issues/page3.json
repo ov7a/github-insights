@@ -1,0 +1,19 @@
+{
+  "data": {
+    "repository": {
+      "issues": {
+        "totalCount": 370,
+        "nodes": [
+          {
+            "url": "issue7_url",
+            "createdAt": "2012-01-28T22:05:45Z"
+          }
+        ],
+        "pageInfo": {
+          "startCursor": "iamacursor3",
+          "hasPreviousPage": false
+        }
+      }
+    }
+  }
+}
