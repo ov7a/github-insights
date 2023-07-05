@@ -41,6 +41,10 @@ fun calculateAndPresent() = catchValidationError {
     val authorization = context.authorization.getAuthorization() ?: throw ValidationException(
         "Please, authorize"
     )
+    val client = when (context.inputs.getItemType()) {
+        ItemType.PULL -> context.pullRequestsClient
+        ItemType.ISSUE -> context.issuesClient
+    }
 
     context.presentation.setLoading()
 
@@ -48,10 +52,10 @@ fun calculateAndPresent() = catchValidationError {
         val reporter = ProgressBarReporter()
 
         val result = getAndCalculateStats(
-            context.pullRequestsClient,
-            repositoryId,
-            authorization,
-            reporter
+            client = client,
+            repositoryId = repositoryId,
+            authorizationHeader = authorization,
+            progressReporter = reporter
         )
 
         context.presentation.present(result)

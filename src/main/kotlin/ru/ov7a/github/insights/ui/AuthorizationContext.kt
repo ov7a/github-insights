@@ -6,8 +6,8 @@ import kotlin.js.json
 import ru.ov7a.github.insights.fetcher.constructBasicAuthValue
 
 class AuthorizationContext {
-    private val userIdInput by lazy { getTextInput(USER_INPUT_ID) }
-    private val tokenIdInput by lazy { getTextInput(TOKEN_INPUT_ID) }
+    private val userIdInput by lazy { getInput(USER_INPUT_ID) }
+    private val tokenIdInput by lazy { getInput(TOKEN_INPUT_ID) }
 
     private val authorizedBlock by lazy { getHtmlElement(AUTHORIZED_BLOCK_ID) }
     private val unauthorizedBlock by lazy { getHtmlElement(UNAUTHORIZED_BLOCK_ID) }

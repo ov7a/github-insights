@@ -11,7 +11,7 @@ import kotlinx.browser.window
 import org.w3c.dom.HTMLElement
 import org.w3c.dom.HTMLInputElement
 
-fun getTextInput(inputId: String): HTMLInputElement =
+fun getInput(inputId: String): HTMLInputElement =
     document.getElementById(inputId) as HTMLInputElement?
         ?: throw RuntimeException("Oopsie, can't find text input $inputId by id")
 
