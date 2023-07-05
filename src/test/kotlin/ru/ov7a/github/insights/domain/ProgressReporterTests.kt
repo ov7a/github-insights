@@ -1,10 +1,8 @@
-package ru.ov7a.github.insights.calculation
+package ru.ov7a.github.insights.domain
 
 import io.kotest.matchers.shouldBe
 import kotlin.test.Test
 import kotlinx.datetime.Clock
-import ru.ov7a.github.insights.domain.DataBatch
-import ru.ov7a.github.insights.domain.IssueLike
 import ru.ov7a.github.insights.runTest
 
 class ProgressReporterTests {

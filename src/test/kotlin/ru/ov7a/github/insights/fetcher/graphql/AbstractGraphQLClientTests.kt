@@ -16,6 +16,8 @@ import kotlin.test.Test
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.toList
 import ru.ov7a.github.insights.Endpoint
+import ru.ov7a.github.insights.domain.FetchParameters
+import ru.ov7a.github.insights.domain.ItemType
 import ru.ov7a.github.insights.domain.RepositoryId
 import ru.ov7a.github.insights.fetcher.Client
 import ru.ov7a.github.insights.fetcher.JsonClient
@@ -58,6 +60,7 @@ abstract class AbstractGraphQLClientTests {
     }
 
     protected abstract val dataDir: String
+    protected abstract val itemType: ItemType
 
     abstract fun createClient(jsonClient: JsonClient): Client
 
@@ -77,6 +80,12 @@ abstract class AbstractGraphQLClientTests {
         action = action,
     )
 
+    protected val defaultFetchParameters = FetchParameters(
+        itemType,
+        RepositoryId("octocat", "Hello-World"),
+        authHeader
+    )
+
     @Test
     fun should_properly_fetch_several_pages() = runTest {
         fun responseMock(dataFile: String) = mockResponse(
@@ -91,7 +100,7 @@ abstract class AbstractGraphQLClientTests {
             responseMock(dataFile = "page2"),
             responseMock(dataFile = "page3")
         ) {
-            fetchAll(RepositoryId("octocat", "Hello-World"), authHeader).toList()
+            fetchAll(defaultFetchParameters).toList()
         }
 
         result shouldHaveSize 3
@@ -109,7 +118,9 @@ abstract class AbstractGraphQLClientTests {
                     headers = defaultResponseHeaders
                 )
             ) {
-                fetchAll(RepositoryId("octocat", "non-existing"), authHeader)
+                fetchAll(
+                    defaultFetchParameters.copy(repositoryId = RepositoryId("octocat", "non-existing"))
+                )
             }
             resultFlow.collect()
         }
@@ -123,7 +134,7 @@ abstract class AbstractGraphQLClientTests {
                 "requests/graphql/$dataDir/example.graphql",
                 validResponse("responses/graphql/page_data_error.json"),
             ) {
-                fetchAll(RepositoryId("octocat", "Hello-World"), authHeader)
+                fetchAll(defaultFetchParameters)
             }
             resultFlow.collect()
         }
@@ -137,7 +148,7 @@ abstract class AbstractGraphQLClientTests {
                 "requests/graphql/$dataDir/example.graphql",
                 validResponse("responses/graphql/page_query_error.json"),
             ) {
-                fetchAll(RepositoryId("octocat", "Hello-World"), authHeader)
+                fetchAll(defaultFetchParameters)
             }
             resultFlow.collect()
         }

@@ -1,4 +1,4 @@
-package ru.ov7a.github.insights.calculation
+package ru.ov7a.github.insights.calculation.stats
 
 import io.kotest.matchers.shouldBe
 import kotlin.test.Test
@@ -32,7 +32,7 @@ class CalculateTest {
                 closedAt = 4000
             )
         )
-        //Durations: 5000, 1500, 500, 1000
+        // Durations: 5000, 1500, 500, 1000
         val result = calculateDurationStats(pulls, now = Instant.fromEpochMilliseconds(6000))
         result shouldBe listOf(
             Statistic("0th percentile (minimum)", 500.milliseconds),

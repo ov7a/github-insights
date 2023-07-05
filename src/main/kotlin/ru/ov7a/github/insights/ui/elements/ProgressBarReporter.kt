@@ -1,7 +1,7 @@
 package ru.ov7a.github.insights.ui.elements
 
 import org.w3c.dom.HTMLProgressElement
-import ru.ov7a.github.insights.calculation.ProgressReporter
+import ru.ov7a.github.insights.domain.ProgressReporter
 
 class ProgressBarReporter : ProgressReporter() {
     private val progressBar = getHtmlElement(PROGRESS_BAR_ID) as HTMLProgressElement

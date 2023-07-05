@@ -7,7 +7,7 @@ import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.w3c.dom.url.URLSearchParams
-import ru.ov7a.github.insights.ui.contexts.ItemType
+import ru.ov7a.github.insights.domain.FetchParameters
 import ru.ov7a.github.insights.ui.elements.ProgressBarReporter
 
 private val context = Context()
@@ -43,22 +43,17 @@ fun calculateAndPresent() = catchValidationError {
     val authorization = context.authorization.getAuthorization() ?: throw ValidationException(
         "Please, authorize"
     )
-    val client = when (context.inputs.getItemType()) {
-        ItemType.PULL -> context.pullRequestsClient
-        ItemType.ISSUE -> context.issuesClient
-    }
-
+    val fetchParameters = FetchParameters(
+        context.inputs.getItemType(),
+        repositoryId,
+        authorization
+    )
     context.presentation.setLoading()
 
     GlobalScope.launch {
         val reporter = ProgressBarReporter()
 
-        val result = getAndCalculateStats(
-            client = client,
-            repositoryId = repositoryId,
-            authorizationHeader = authorization,
-            progressReporter = reporter
-        )
+        val result = getAndCalculateStats(fetchParameters, reporter)
 
         context.presentation.present(result)
     }

@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.toList
 import kotlinx.datetime.Instant
 import ru.ov7a.github.insights.domain.DataBatch
 import ru.ov7a.github.insights.domain.IssueLike
-import ru.ov7a.github.insights.domain.RepositoryId
+import ru.ov7a.github.insights.domain.ItemType
 import ru.ov7a.github.insights.fetcher.Client
 import ru.ov7a.github.insights.fetcher.JsonClient
 import ru.ov7a.github.insights.fetcher.graphql.pulls.PullRequestsClient
@@ -17,6 +17,7 @@ class GraphQLPullRequestsClientTests : AbstractGraphQLClientTests() {
     override fun createClient(jsonClient: JsonClient): Client = PullRequestsClient(jsonClient)
 
     override val dataDir = "pulls"
+    override val itemType = ItemType.PULL
 
     @Test
     fun should_fetch_single_page_properly() = runTest {
@@ -24,7 +25,7 @@ class GraphQLPullRequestsClientTests : AbstractGraphQLClientTests() {
             "requests/graphql/$dataDir/example.graphql",
             validResponse("responses/graphql/$dataDir/example_page.json"),
         ) {
-            fetchAll(RepositoryId("octocat", "Hello-World"), authHeader).toList()
+            fetchAll(defaultFetchParameters).toList()
         }
 
         result shouldBe listOf(

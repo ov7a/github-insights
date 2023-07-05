@@ -1,4 +1,4 @@
-package ru.ov7a.github.insights.calculation
+package ru.ov7a.github.insights.calculation.stats
 
 import kotlin.math.ceil
 import kotlin.math.floor

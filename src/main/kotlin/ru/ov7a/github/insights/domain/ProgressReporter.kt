@@ -1,6 +1,4 @@
-package ru.ov7a.github.insights.calculation
-
-import ru.ov7a.github.insights.domain.DataBatch
+package ru.ov7a.github.insights.domain
 
 open class ProgressReporter {
 

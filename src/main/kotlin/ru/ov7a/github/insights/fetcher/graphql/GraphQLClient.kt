@@ -10,6 +10,7 @@ import io.ktor.http.contentType
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import ru.ov7a.github.insights.domain.DataBatch
+import ru.ov7a.github.insights.domain.FetchParameters
 import ru.ov7a.github.insights.domain.IssueLike
 import ru.ov7a.github.insights.domain.RepositoryId
 import ru.ov7a.github.insights.fetcher.Client
@@ -49,15 +50,14 @@ abstract class AbstractGraphQLClient<Response>(
     }
 
     private suspend fun fetch(
-        repositoryId: RepositoryId,
+        fetchParameters: FetchParameters,
         cursor: String?,
-        authorizationHeader: String
     ): GraphQLResponse<Response> {
         return json.client.post(GRAPHQL_URL) {
             contentType(ContentType.Application.Json)
-            setBody(createQuery(repositoryId, cursor))
+            setBody(createQuery(fetchParameters.repositoryId, cursor))
             headers {
-                append(HttpHeaders.Authorization, authorizationHeader)
+                append(HttpHeaders.Authorization, fetchParameters.authorizationHeader)
             }
         }.body()
     }
@@ -67,11 +67,11 @@ abstract class AbstractGraphQLClient<Response>(
         data = this.nodes.map { it.convert() }
     )
 
-    override suspend fun fetchAll(repositoryId: RepositoryId, authorizationHeader: String): Flow<DataBatch> =
+    override suspend fun fetchAll(fetchParameters: FetchParameters): Flow<DataBatch> =
         flow {
             var cursor: String? = null
             do {
-                val response = fetch(repositoryId, cursor, authorizationHeader)
+                val response = fetch(fetchParameters, cursor)
                 val data = response.data()
                 emit(data.toBatch())
                 cursor = data.pageInfo.startCursor
