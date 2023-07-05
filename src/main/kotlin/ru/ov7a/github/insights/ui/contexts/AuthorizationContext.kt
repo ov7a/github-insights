@@ -1,9 +1,12 @@
-package ru.ov7a.github.insights.ui
+package ru.ov7a.github.insights.ui.contexts
 
 import Cookies
 import Cookies.CookieAttributes
 import kotlin.js.json
 import ru.ov7a.github.insights.fetcher.constructBasicAuthValue
+import ru.ov7a.github.insights.ui.ValidationException
+import ru.ov7a.github.insights.ui.elements.getHtmlElement
+import ru.ov7a.github.insights.ui.elements.getInput
 
 class AuthorizationContext {
     private val userIdInput by lazy { getInput(USER_INPUT_ID) }

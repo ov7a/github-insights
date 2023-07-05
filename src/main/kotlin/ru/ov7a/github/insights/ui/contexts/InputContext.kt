@@ -1,7 +1,9 @@
-package ru.ov7a.github.insights.ui
+package ru.ov7a.github.insights.ui.contexts
 
 import org.w3c.dom.url.URLSearchParams
 import ru.ov7a.github.insights.domain.RepositoryId
+import ru.ov7a.github.insights.ui.elements.ChoiceElement
+import ru.ov7a.github.insights.ui.elements.getInput
 
 class InputContext {
     private val repoIdInput by lazy { getInput(REPO_INPUT_ID) }

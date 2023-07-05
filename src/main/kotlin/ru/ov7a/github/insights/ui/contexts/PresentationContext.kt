@@ -1,4 +1,4 @@
-package ru.ov7a.github.insights.ui
+package ru.ov7a.github.insights.ui.contexts
 
 import io.ktor.client.plugins.ClientRequestException
 import kotlin.time.Duration
@@ -13,6 +13,11 @@ import kotlinx.html.tr
 import org.w3c.dom.HTMLTableElement
 import ru.ov7a.github.insights.domain.Stats
 import ru.ov7a.github.insights.fetcher.graphql.GraphQLError
+import ru.ov7a.github.insights.ui.elements.getHtmlElement
+import ru.ov7a.github.insights.ui.elements.hide
+import ru.ov7a.github.insights.ui.elements.setContent
+import ru.ov7a.github.insights.ui.elements.show
+import ru.ov7a.github.insights.ui.humanReadableDuration
 
 @OptIn(ExperimentalTime::class)
 class PresentationContext {

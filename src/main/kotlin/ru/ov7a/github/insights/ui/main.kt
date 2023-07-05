@@ -7,6 +7,8 @@ import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.w3c.dom.url.URLSearchParams
+import ru.ov7a.github.insights.ui.contexts.ItemType
+import ru.ov7a.github.insights.ui.elements.ProgressBarReporter
 
 private val context = Context()
 

@@ -1,4 +1,4 @@
-package ru.ov7a.github.insights.ui
+package ru.ov7a.github.insights.ui.elements
 
 import kotlinx.browser.document
 import org.w3c.dom.HTMLInputElement
