@@ -1,12 +1,18 @@
 package ru.ov7a.github.insights.ui
 
+import org.w3c.dom.url.URLSearchParams
 import ru.ov7a.github.insights.domain.RepositoryId
 
-class RepositoryIdContext {
+class InputContext {
     private val repoIdInput by lazy { getTextInput(REPO_INPUT_ID) }
 
-    fun setRepositoryValue(newValue: String) {
-        repoIdInput.value = newValue
+    fun init(params: URLSearchParams): Boolean {
+        val updated = params.get(REPO_QUERY_PARAM)?.let {
+            repoIdInput.value = it
+            true
+        } ?: false
+
+        return updated
     }
 
     fun getRepositoryId(): RepositoryId? {
@@ -17,6 +23,6 @@ class RepositoryIdContext {
 
     companion object {
         private const val REPO_INPUT_ID = "repository_id"
-        const val REPO_QUERY_PARAM = "repo"
+        private const val REPO_QUERY_PARAM = "repo"
     }
 }

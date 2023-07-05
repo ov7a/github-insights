@@ -7,7 +7,6 @@ import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.w3c.dom.url.URLSearchParams
-import ru.ov7a.github.insights.ui.RepositoryIdContext.Companion.REPO_QUERY_PARAM
 
 private val context = Context()
 
@@ -26,10 +25,9 @@ fun init() {
     val queryParams = window.location.search.let {
         URLSearchParams(it)
     }
-    val repoParam = queryParams.get(REPO_QUERY_PARAM)
+    val updated = context.inputs.init(queryParams)
 
-    repoParam?.let {
-        context.repositoryId.setRepositoryValue(it)
+    if (updated && context.authorization.getAuthorization() != null) {
         calculateAndPresent()
     }
 }
@@ -37,7 +35,7 @@ fun init() {
 @JsExport
 @OptIn(DelicateCoroutinesApi::class, ExperimentalJsExport::class, ExperimentalTime::class)
 fun calculateAndPresent() = catchValidationError {
-    val repositoryId = context.repositoryId.getRepositoryId() ?: throw ValidationException(
+    val repositoryId = context.inputs.getRepositoryId() ?: throw ValidationException(
         "Can't parse input. Please, provide it as url to repository or as %user%/%repositoryName%"
     )
     val authorization = context.authorization.getAuthorization() ?: throw ValidationException(
