@@ -4,6 +4,7 @@ import org.w3c.dom.url.URLSearchParams
 import ru.ov7a.github.insights.domain.RepositoryId
 import ru.ov7a.github.insights.ui.elements.ChoiceElement
 import ru.ov7a.github.insights.ui.elements.getInput
+import ru.ov7a.github.insights.ui.encodeURIComponent
 
 class InputContext {
     private val repoIdInput by lazy { getInput(REPO_INPUT_ID) }
@@ -27,6 +28,14 @@ class InputContext {
     }
 
     fun getItemType(): ItemType = ItemType.forValue(itemTypeInput.value)
+
+    fun createShareParams(): String {
+        val query = mapOf(
+            REPO_QUERY_PARAM to encodeURIComponent(repoIdInput.value),
+            ITEM_QUERY_PARAM to encodeURIComponent(itemTypeInput.value),
+        )
+        return query.entries.joinToString(prefix = "?", separator = "&") { "${it.key}=${it.value}" }
+    }
 
     companion object {
         private const val REPO_INPUT_ID = "repository_id"

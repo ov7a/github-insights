@@ -30,3 +30,5 @@ fun humanReadableDuration(duration: Duration): String {
 }
 
 class ValidationException(override val message: String) : IllegalArgumentException(message)
+
+external fun encodeURIComponent(encodedURI: String): String

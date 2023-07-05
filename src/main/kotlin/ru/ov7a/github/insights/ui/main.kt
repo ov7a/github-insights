@@ -75,3 +75,12 @@ fun storeAuthorization() = catchValidationError {
 fun resetAuthorization() {
     context.authorization.resetAuthorization()
 }
+
+@OptIn(ExperimentalJsExport::class)
+@JsExport
+fun copyShareLink() {
+    val location = window.location.href
+    val params = context.inputs.createShareParams()
+    window.navigator.clipboard.writeText(location.substringBefore("?") + params)
+    window.alert("Link copied to clipboard")
+}
