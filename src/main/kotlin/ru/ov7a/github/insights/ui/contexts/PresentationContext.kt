@@ -11,6 +11,7 @@ import kotlinx.html.tbody
 import kotlinx.html.td
 import kotlinx.html.tr
 import org.w3c.dom.HTMLTableElement
+import ru.ov7a.github.insights.domain.ItemType
 import ru.ov7a.github.insights.domain.Stats
 import ru.ov7a.github.insights.fetcher.graphql.GraphQLError
 import ru.ov7a.github.insights.ui.elements.getHtmlElement
@@ -25,6 +26,7 @@ class PresentationContext {
     private val successResultBlock by lazy { getHtmlElement(SUCCESS_RESULT_BLOCK_ID) }
     private val noDataResultBlock by lazy { getHtmlElement(NO_DATA_RESULT_BLOCK_ID) }
     private val failureResultBlock by lazy { getHtmlElement(FAILURE_RESULT_BLOCK_ID) }
+    private val helpHint by lazy { getHtmlElement(HELP_HINT_ID) }
 
     fun setLoading() {
         progressBarBlock.show()
@@ -40,6 +42,14 @@ class PresentationContext {
             result.isSuccess -> presentSuccess(result.getOrNull())
             result.isFailure -> presentFailure(result.exceptionOrNull())
         }
+    }
+
+    fun updateHint(itemType: ItemType) {
+        val text = when (itemType) {
+            ItemType.PULL -> "How long will your pull request be reviewed? Get an estimate!"
+            ItemType.ISSUE -> "How long should you wait until your issue is resolved? Get an estimate!"
+        }
+        helpHint.textContent = text
     }
 
     private fun presentSuccess(stats: Stats?) {
@@ -90,6 +100,7 @@ class PresentationContext {
         const val SUCCESS_RESULT_BLOCK_ID = "results_success"
         const val NO_DATA_RESULT_BLOCK_ID = "results_no_data"
         const val FAILURE_RESULT_BLOCK_ID = "results_error"
+        const val HELP_HINT_ID = "help"
     }
 }
 

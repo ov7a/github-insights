@@ -12,9 +12,9 @@
 </head>
 <body>
 <div class="main">
-    <h1>Pull requests close time stats</h1>
+    <h1>GitHub issues and pull requests insights</h1>
 
-    <p class="hint">How long will your pull request be reviewed? Get an estimate!</p>
+    <p id="help" class="hint">How long will your pull request be reviewed? Get an estimate!</p>
 
     <div class="repo">
         <form id="repo" action="javascript:void(0)">
@@ -26,9 +26,11 @@
                 />
             </p>
             <p>
-                <input id="item_type_pull" type="radio" name="item_type" value="pull" checked/>
+                <input id="item_type_pull" type="radio" name="item_type" value="pull" checked
+                       onclick="github_insights.ru.ov7a.github.insights.ui.updateType()"/>
                 <label for="item_type_pull">Pull Requests</label>
-                <input id="item_type_issue" type="radio" name="item_type" value="issue"/>
+                <input id="item_type_issue" type="radio" name="item_type" value="issue"
+                       onclick="github_insights.ru.ov7a.github.insights.ui.updateType()"/>
                 <label for="item_type_issue">Issues</label>
             </p>
             <p>

@@ -79,3 +79,10 @@ fun copyShareLink() {
     window.navigator.clipboard.writeText(location.substringBefore("?") + params)
     window.alert("Link copied to clipboard")
 }
+
+@OptIn(ExperimentalJsExport::class)
+@JsExport
+fun updateType() {
+    val itemType = context.inputs.getItemType()
+    context.presentation.updateHint(itemType)
+}
