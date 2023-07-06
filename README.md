@@ -7,7 +7,7 @@ Same for issue resolving time.
 
 Build it with `build` gradle task.
 
-[Demo](https://ov7a.github.io/github-pr-stats)
+[Demo](https://ov7a.github.io/github_insights)
 
 Sample output:
 
