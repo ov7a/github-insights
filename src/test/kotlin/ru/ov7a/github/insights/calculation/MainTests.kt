@@ -13,6 +13,7 @@ import io.ktor.http.HttpStatusCode
 import kotlin.test.Test
 import kotlin.time.ExperimentalTime
 import ru.ov7a.github.insights.domain.FetchParameters
+import ru.ov7a.github.insights.domain.Filters
 import ru.ov7a.github.insights.domain.ItemType
 import ru.ov7a.github.insights.domain.ProgressReporter
 import ru.ov7a.github.insights.domain.RepositoryId
@@ -47,6 +48,7 @@ class MainTests {
             FetchParameters(
                 ItemType.PULL,
                 RepositoryId("octocat", "Hello-World"),
+                Filters(),
                 authHeader,
             ),
             reporter,
@@ -72,6 +74,7 @@ class MainTests {
             FetchParameters(
                 ItemType.PULL,
                 RepositoryId("octocat", "Hello-World"),
+                Filters(),
                 authHeader,
             ),
             reporter,
@@ -94,6 +97,7 @@ class MainTests {
             FetchParameters(
                 ItemType.PULL,
                 RepositoryId("octocat", "Hello-World"),
+                Filters(),
                 authHeader,
             ),
             reporter,

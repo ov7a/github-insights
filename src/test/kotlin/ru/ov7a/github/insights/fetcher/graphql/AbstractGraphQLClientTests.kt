@@ -2,6 +2,7 @@ package ru.ov7a.github.insights.fetcher.graphql
 
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.matchers.collections.shouldHaveSize
+import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldContain
 import io.ktor.client.engine.mock.MockRequestHandler
 import io.ktor.client.plugins.ClientRequestException
@@ -17,8 +18,10 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.toList
 import ru.ov7a.github.insights.Endpoint
 import ru.ov7a.github.insights.domain.FetchParameters
+import ru.ov7a.github.insights.domain.Filters
 import ru.ov7a.github.insights.domain.ItemType
 import ru.ov7a.github.insights.domain.RepositoryId
+import ru.ov7a.github.insights.domain.State
 import ru.ov7a.github.insights.fetcher.Client
 import ru.ov7a.github.insights.fetcher.JsonClient
 import ru.ov7a.github.insights.fetcher.withMockEngine
@@ -83,6 +86,7 @@ abstract class AbstractGraphQLClientTests {
     protected val defaultFetchParameters = FetchParameters(
         itemType,
         RepositoryId("octocat", "Hello-World"),
+        Filters(),
         authHeader
     )
 
@@ -153,5 +157,23 @@ abstract class AbstractGraphQLClientTests {
             resultFlow.collect()
         }
         exception.message shouldContain "Could not parse the query"
+    }
+
+    @Test
+    fun should_filter_and_limit() = runTest {
+        val limit = 2
+        val filters = Filters(
+            limit = limit,
+            includeLabels = setOf("a:bug", "a:feature"),
+            states = setOf(State.OPEN),
+        )
+        val result = makeQuery(
+            "requests/graphql/$dataDir/filtered.graphql",
+            validResponse("responses/graphql/$dataDir/example_page.json"),
+        ) {
+            fetchAll(defaultFetchParameters.copy(filters = filters)).toList()
+        }
+        val batch = result.single()
+        batch.totalCount shouldBe limit
     }
 }

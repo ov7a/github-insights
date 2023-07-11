@@ -7,10 +7,12 @@ import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import io.ktor.http.contentType
+import kotlin.math.min
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import ru.ov7a.github.insights.domain.DataBatch
 import ru.ov7a.github.insights.domain.FetchParameters
+import ru.ov7a.github.insights.domain.Filters
 import ru.ov7a.github.insights.domain.IssueLike
 import ru.ov7a.github.insights.domain.RepositoryId
 import ru.ov7a.github.insights.fetcher.Client
@@ -26,10 +28,14 @@ abstract class AbstractGraphQLClient<Response>(
 
     private fun createQuery(
         repositoryId: RepositoryId,
+        filters: Filters,
+        limit: Int,
         cursor: String?,
     ): GraphQLRequest {
         val filter = listOfNotNull(
-            "last: 100",
+            "last: $limit",
+            filters.states?.joinToString(prefix = "states:[", postfix = "]", separator = ","),
+            filters.includeLabels?.joinToString(prefix = "labels:[", postfix = "]", separator = ",") { "\"$it\"" },
             cursor?.let { "before: \"$it\"" },
         ).joinToString(", ")
 
@@ -51,34 +57,42 @@ abstract class AbstractGraphQLClient<Response>(
 
     private suspend fun fetch(
         fetchParameters: FetchParameters,
+        limit: Int,
         cursor: String?,
     ): GraphQLResponse<Response> {
         return json.client.post(GRAPHQL_URL) {
             contentType(ContentType.Application.Json)
-            setBody(createQuery(fetchParameters.repositoryId, cursor))
+            setBody(createQuery(fetchParameters.repositoryId, fetchParameters.filters, limit, cursor))
             headers {
                 append(HttpHeaders.Authorization, fetchParameters.authorizationHeader)
             }
         }.body()
     }
 
-    private fun DataPage<Response>.toBatch(): DataBatch = DataBatch(
-        totalCount = this.totalCount,
+    private fun DataPage<Response>.toBatch(totalCount: Int): DataBatch = DataBatch(
+        totalCount = totalCount,
         data = this.nodes.map { it.convert() }
     )
 
     override suspend fun fetchAll(fetchParameters: FetchParameters): Flow<DataBatch> =
         flow {
-            var cursor: String? = null
-            do {
-                val response = fetch(fetchParameters, cursor)
-                val data = response.data()
-                emit(data.toBatch())
-                cursor = data.pageInfo.startCursor
-            } while (data.pageInfo.hasPreviousPage)
+            val limit = fetchParameters.filters.limit
+            var data = fetch(fetchParameters, min(MAX_ITEMS_PER_QUERY, limit ?: MAX_ITEMS_PER_QUERY), null).data()
+            val totalItemsToFetch = limit?.let { min(data.totalCount, it) } ?: data.totalCount
+            val firstBatch = data.toBatch(totalItemsToFetch)
+            emit(firstBatch)
+
+            var itemsLeft: Int = totalItemsToFetch - firstBatch.data.size
+            while (data.pageInfo.hasPreviousPage && itemsLeft > 0) {
+                data = fetch(fetchParameters, min(MAX_ITEMS_PER_QUERY, itemsLeft), data.pageInfo.startCursor).data()
+                val batch = data.toBatch(totalItemsToFetch)
+                itemsLeft -= batch.data.size
+                emit(batch)
+            }
         }
 
     private companion object {
         const val GRAPHQL_URL = "https://api.github.com/graphql"
+        const val MAX_ITEMS_PER_QUERY = 100
     }
 }

@@ -1,0 +1,11 @@
+{
+  repository(name: "Hello-World", owner: "octocat") {
+    pullRequests(last: 2, states:[OPEN], labels:["a:bug","a:feature"]) {
+      totalCount
+      nodes {
+        url, createdAt, mergedAt, closedAt
+      }
+      pageInfo { startCursor, hasPreviousPage }
+    }
+  }
+}

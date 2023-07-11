@@ -8,6 +8,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.w3c.dom.url.URLSearchParams
 import ru.ov7a.github.insights.domain.FetchParameters
+import ru.ov7a.github.insights.domain.Filters
 import ru.ov7a.github.insights.ui.elements.ProgressBarReporter
 
 private val context = Context()
@@ -43,9 +44,15 @@ fun calculateAndPresent() = catchValidationError {
     val authorization = context.authorization.getAuthorization() ?: throw ValidationException(
         "Please, authorize"
     )
+    val filters = Filters(
+        includeLabels = context.inputs.getIncludes(),
+        states = context.inputs.getStates(),
+        limit = context.inputs.getLimit(),
+    )
     val fetchParameters = FetchParameters(
         context.inputs.getItemType(),
         repositoryId,
+        filters,
         authorization
     )
     context.presentation.setLoading()
@@ -85,4 +92,5 @@ fun copyShareLink() {
 fun updateType() {
     val itemType = context.inputs.getItemType()
     context.presentation.updateHint(itemType)
+    context.inputs.updateOptions(itemType)
 }
