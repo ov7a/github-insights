@@ -1,6 +1,7 @@
 package ru.ov7a.github.insights.ui.presentation
 
 import kotlinx.browser.document
+import kotlinx.html.A
 import kotlinx.html.a
 import kotlinx.html.div
 import kotlinx.html.dom.create
@@ -24,12 +25,23 @@ object LabelsPresenter : Presenter<LabelsGraph> {
     override fun render(fetchParameters: FetchParameters, data: LabelsGraph): HTMLElement {
         val itemName = when (fetchParameters.itemType) {
             ItemType.ISSUE -> "issue"
-            ItemType.PULL -> "pull"
+            ItemType.PULL -> "PR"
         }
+        val repositoryId = fetchParameters.repositoryId
         val entries = data.nodes().sortedByDescending { it.score }
         return document.create.div {
             p {
                 +"Total ${itemName}s: ${data.total()}"
+            }
+            a {
+                val csv = entries.joinToString(prefix = "Label,Number of ${itemName}s,Score\n", separator = "\n") {
+                    "${it.name.replace(",", "\\,")},${it.items},${it.score}"
+                }
+                createDownloadLink(
+                    data = csv,
+                    fileName = "${repositoryId.owner}_${repositoryId.name}_${itemName}s_label_stats.csv",
+                )
+                +"Download as csv"
             }
             table {
                 thead {
@@ -88,5 +100,13 @@ object LabelsPresenter : Presenter<LabelsGraph> {
         } else {
             "#FFFFFF"
         }
+    }
+
+    private fun A.createDownloadLink(
+        data: String,
+        fileName: String,
+    ) {
+        href = "data:text/plain;charset=utf-8," + encodeURIComponent(data)
+        attributes["download"] = fileName
     }
 }
