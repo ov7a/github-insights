@@ -83,12 +83,14 @@ abstract class AbstractGraphQLClientTests {
         action = action,
     )
 
-    protected val defaultFetchParameters = FetchParameters(
-        itemType,
-        RepositoryId("octocat", "Hello-World"),
-        Filters(),
-        authHeader
-    )
+    protected val defaultFetchParameters: FetchParameters by lazy {
+        FetchParameters(
+            itemType,
+            RepositoryId("octocat", "Hello-World"),
+            Filters(),
+            authHeader
+        )
+    }
 
     @Test
     fun should_properly_fetch_several_pages() = runTest {
