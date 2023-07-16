@@ -2,6 +2,7 @@ package ru.ov7a.github.insights.domain
 
 import io.kotest.matchers.shouldBe
 import kotlin.test.Test
+import ru.ov7a.github.insights.domain.input.RepositoryId
 
 class ParseRepoIdTests {
 

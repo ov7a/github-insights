@@ -11,8 +11,8 @@ import kotlinx.html.tbody
 import kotlinx.html.td
 import kotlinx.html.tr
 import org.w3c.dom.HTMLTableElement
-import ru.ov7a.github.insights.domain.ItemType
-import ru.ov7a.github.insights.domain.Stats
+import ru.ov7a.github.insights.domain.input.ItemType
+import ru.ov7a.github.insights.domain.output.Stats
 import ru.ov7a.github.insights.fetcher.graphql.GraphQLError
 import ru.ov7a.github.insights.ui.elements.getHtmlElement
 import ru.ov7a.github.insights.ui.elements.hide

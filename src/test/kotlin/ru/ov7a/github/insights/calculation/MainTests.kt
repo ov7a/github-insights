@@ -14,10 +14,10 @@ import kotlin.test.Test
 import kotlin.time.ExperimentalTime
 import ru.ov7a.github.insights.domain.FetchParameters
 import ru.ov7a.github.insights.domain.Filters
-import ru.ov7a.github.insights.domain.ItemType
 import ru.ov7a.github.insights.domain.ProgressReporter
-import ru.ov7a.github.insights.domain.RepositoryId
-import ru.ov7a.github.insights.domain.Statistic
+import ru.ov7a.github.insights.domain.input.ItemType
+import ru.ov7a.github.insights.domain.input.RepositoryId
+import ru.ov7a.github.insights.domain.output.Statistic
 import ru.ov7a.github.insights.fetcher.Client
 import ru.ov7a.github.insights.fetcher.ClientsProvider
 import ru.ov7a.github.insights.fetcher.createClientWithMocks

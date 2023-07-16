@@ -7,9 +7,9 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.toList
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
-import ru.ov7a.github.insights.domain.IssueLike
-import ru.ov7a.github.insights.domain.Statistic
-import ru.ov7a.github.insights.domain.Stats
+import ru.ov7a.github.insights.domain.input.IssueLike
+import ru.ov7a.github.insights.domain.output.Statistic
+import ru.ov7a.github.insights.domain.output.Stats
 
 @ExperimentalTime
 fun getDuration(issueLike: IssueLike, now: Instant): Duration =

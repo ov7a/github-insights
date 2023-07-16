@@ -5,10 +5,10 @@ import kotlinx.coroutines.flow.flatMapConcat
 import kotlinx.coroutines.flow.onEach
 import ru.ov7a.github.insights.calculation.stats.calculateDurationStats
 import ru.ov7a.github.insights.domain.FetchParameters
-import ru.ov7a.github.insights.domain.ItemType
 import ru.ov7a.github.insights.domain.ProgressReporter
-import ru.ov7a.github.insights.domain.Statistic
-import ru.ov7a.github.insights.domain.Stats
+import ru.ov7a.github.insights.domain.input.ItemType
+import ru.ov7a.github.insights.domain.output.Statistic
+import ru.ov7a.github.insights.domain.output.Stats
 import ru.ov7a.github.insights.fetcher.Clients
 import ru.ov7a.github.insights.fetcher.ClientsProvider
 

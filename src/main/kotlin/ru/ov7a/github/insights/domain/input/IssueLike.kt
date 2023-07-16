@@ -1,4 +1,4 @@
-package ru.ov7a.github.insights.domain
+package ru.ov7a.github.insights.domain.input
 
 import kotlinx.datetime.Instant
 

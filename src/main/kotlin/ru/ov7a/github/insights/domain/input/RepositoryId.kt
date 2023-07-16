@@ -1,8 +1,8 @@
-package ru.ov7a.github.insights.domain
+package ru.ov7a.github.insights.domain.input
 
 data class RepositoryId(val owner: String, val name: String) {
     companion object {
-        //named groups aren't supported in JS
+        // named groups aren't supported in JS
         private val pattern = """\s*(?:https?://github.com/)?([^/\s"]+)/([^/\s"]+)/?\s*""".toRegex()
 
         fun parse(input: String): RepositoryId? {

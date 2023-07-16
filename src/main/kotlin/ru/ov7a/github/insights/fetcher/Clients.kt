@@ -1,8 +1,8 @@
 package ru.ov7a.github.insights.fetcher
 
 import kotlinx.coroutines.flow.Flow
-import ru.ov7a.github.insights.domain.DataBatch
 import ru.ov7a.github.insights.domain.FetchParameters
+import ru.ov7a.github.insights.domain.input.DataBatch
 import ru.ov7a.github.insights.fetcher.graphql.issues.IssuesClient
 import ru.ov7a.github.insights.fetcher.graphql.pulls.PullRequestsClient
 

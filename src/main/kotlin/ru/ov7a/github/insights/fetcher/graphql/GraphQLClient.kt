@@ -10,11 +10,11 @@ import io.ktor.http.contentType
 import kotlin.math.min
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import ru.ov7a.github.insights.domain.DataBatch
 import ru.ov7a.github.insights.domain.FetchParameters
 import ru.ov7a.github.insights.domain.Filters
-import ru.ov7a.github.insights.domain.IssueLike
-import ru.ov7a.github.insights.domain.RepositoryId
+import ru.ov7a.github.insights.domain.input.DataBatch
+import ru.ov7a.github.insights.domain.input.IssueLike
+import ru.ov7a.github.insights.domain.input.RepositoryId
 import ru.ov7a.github.insights.fetcher.Client
 import ru.ov7a.github.insights.fetcher.JsonClient
 

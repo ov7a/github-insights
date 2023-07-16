@@ -3,6 +3,8 @@ package ru.ov7a.github.insights.domain
 import io.kotest.matchers.shouldBe
 import kotlin.test.Test
 import kotlinx.datetime.Clock
+import ru.ov7a.github.insights.domain.input.DataBatch
+import ru.ov7a.github.insights.domain.input.IssueLike
 import ru.ov7a.github.insights.runTest
 
 class ProgressReporterTests {

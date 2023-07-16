@@ -6,8 +6,8 @@ import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.ExperimentalTime
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.datetime.Instant
-import ru.ov7a.github.insights.domain.IssueLike
-import ru.ov7a.github.insights.domain.Statistic
+import ru.ov7a.github.insights.domain.input.IssueLike
+import ru.ov7a.github.insights.domain.output.Statistic
 import ru.ov7a.github.insights.runTest
 
 @ExperimentalTime

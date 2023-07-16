@@ -1,5 +1,7 @@
 package ru.ov7a.github.insights.domain
 
+import ru.ov7a.github.insights.domain.input.DataBatch
+
 open class ProgressReporter {
 
     open suspend fun report(value: Double) {

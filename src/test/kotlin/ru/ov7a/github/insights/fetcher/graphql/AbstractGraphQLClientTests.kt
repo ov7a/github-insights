@@ -19,9 +19,9 @@ import kotlinx.coroutines.flow.toList
 import ru.ov7a.github.insights.Endpoint
 import ru.ov7a.github.insights.domain.FetchParameters
 import ru.ov7a.github.insights.domain.Filters
-import ru.ov7a.github.insights.domain.ItemType
-import ru.ov7a.github.insights.domain.RepositoryId
 import ru.ov7a.github.insights.domain.State
+import ru.ov7a.github.insights.domain.input.ItemType
+import ru.ov7a.github.insights.domain.input.RepositoryId
 import ru.ov7a.github.insights.fetcher.Client
 import ru.ov7a.github.insights.fetcher.JsonClient
 import ru.ov7a.github.insights.fetcher.withMockEngine

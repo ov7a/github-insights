@@ -4,9 +4,9 @@ import kotlinx.browser.document
 import kotlinx.html.dom.create
 import kotlinx.html.js.option
 import org.w3c.dom.url.URLSearchParams
-import ru.ov7a.github.insights.domain.ItemType
-import ru.ov7a.github.insights.domain.RepositoryId
 import ru.ov7a.github.insights.domain.State
+import ru.ov7a.github.insights.domain.input.ItemType
+import ru.ov7a.github.insights.domain.input.RepositoryId
 import ru.ov7a.github.insights.ui.elements.ChoiceElement
 import ru.ov7a.github.insights.ui.elements.getInput
 import ru.ov7a.github.insights.ui.elements.getSelector

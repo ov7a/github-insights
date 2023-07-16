@@ -4,9 +4,9 @@ import io.kotest.matchers.shouldBe
 import kotlin.test.Test
 import kotlinx.coroutines.flow.toList
 import kotlinx.datetime.Instant
-import ru.ov7a.github.insights.domain.DataBatch
-import ru.ov7a.github.insights.domain.IssueLike
-import ru.ov7a.github.insights.domain.ItemType
+import ru.ov7a.github.insights.domain.input.DataBatch
+import ru.ov7a.github.insights.domain.input.IssueLike
+import ru.ov7a.github.insights.domain.input.ItemType
 import ru.ov7a.github.insights.fetcher.Client
 import ru.ov7a.github.insights.fetcher.JsonClient
 import ru.ov7a.github.insights.fetcher.graphql.pulls.PullRequestsClient
