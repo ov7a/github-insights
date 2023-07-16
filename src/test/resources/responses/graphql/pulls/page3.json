@@ -6,7 +6,16 @@
         "nodes": [
           {
             "url": "pull7_url",
-            "createdAt": "2012-01-28T22:05:45Z"
+            "createdAt": "2012-01-28T22:05:45Z",
+            "comments": {
+              "totalCount": 0
+            },
+            "reactions": {
+              "totalCount": 0
+            },
+            "labels": {
+              "nodes": []
+            }
           }
         ],
         "pageInfo": {

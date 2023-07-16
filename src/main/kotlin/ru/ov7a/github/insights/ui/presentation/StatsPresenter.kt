@@ -9,12 +9,13 @@ import kotlinx.html.tbody
 import kotlinx.html.td
 import kotlinx.html.tr
 import org.w3c.dom.HTMLElement
+import ru.ov7a.github.insights.domain.FetchParameters
 import ru.ov7a.github.insights.domain.output.Stats
 import ru.ov7a.github.insights.ui.humanReadableDuration
 
 @OptIn(ExperimentalTime::class)
 object StatsPresenter : Presenter<Stats> {
-    override fun render(data: Stats): HTMLElement =
+    override fun render(fetchParameters: FetchParameters, data: Stats): HTMLElement =
         document.create.table {
             tbody {
                 data.map { stat ->

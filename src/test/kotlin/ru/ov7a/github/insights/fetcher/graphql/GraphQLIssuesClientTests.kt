@@ -7,6 +7,7 @@ import kotlinx.datetime.Instant
 import ru.ov7a.github.insights.domain.input.DataBatch
 import ru.ov7a.github.insights.domain.input.IssueLike
 import ru.ov7a.github.insights.domain.input.ItemType
+import ru.ov7a.github.insights.domain.input.Label
 import ru.ov7a.github.insights.fetcher.Client
 import ru.ov7a.github.insights.fetcher.JsonClient
 import ru.ov7a.github.insights.fetcher.graphql.issues.IssuesClient
@@ -35,15 +36,24 @@ class GraphQLIssuesClientTests : AbstractGraphQLClientTests() {
                         url = "https://github.com/octocat/Hello-World/issue/1046",
                         createdAt = Instant.fromEpochMilliseconds(1296068472_000),
                         closedAt = Instant.fromEpochMilliseconds(1296068592_000),
+                        labels = listOf(Label("a:feature", "#0e8a16"), Label("in:jvm-ecosystem", "#d4c5f9")),
+                        comments = 10,
+                        reactions = 11,
                     ),
                     IssueLike(
                         url = "fake_url",
-                        createdAt = Instant.fromEpochMilliseconds(1332878745_000)
+                        createdAt = Instant.fromEpochMilliseconds(1332878745_000),
+                        labels = emptyList(),
+                        comments = 0,
+                        reactions = 0,
                     ),
                     IssueLike(
                         url = "fake_url2",
                         createdAt = Instant.fromEpochMilliseconds(1296068472_000),
                         closedAt = Instant.fromEpochMilliseconds(1296068592_000),
+                        labels = emptyList(),
+                        comments = 1,
+                        reactions = 2,
                     ),
                 ),
             )

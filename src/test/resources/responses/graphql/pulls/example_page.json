@@ -8,18 +8,54 @@
             "url": "https://github.com/octocat/Hello-World/pull/1046",
             "createdAt": "2011-01-26T19:01:12Z",
             "closedAt": "2011-01-26T19:03:12Z",
-            "mergedAt": "2011-01-26T19:04:12Z"
+            "mergedAt": "2011-01-26T19:04:12Z",
+            "comments": {
+              "totalCount": 10
+            },
+            "reactions": {
+              "totalCount": 11
+            },
+            "labels": {
+              "nodes": [
+                {
+                  "name": "a:feature",
+                  "color": "0e8a16"
+                },
+                {
+                  "name": "in:jvm-ecosystem",
+                  "color": "d4c5f9"
+                }
+              ]
+            }
           },
           {
             "url": "fake_url",
             "createdAt": "2012-03-27T20:05:45Z",
             "mergedAt": null,
-            "closedAt": null
+            "closedAt": null,
+            "comments": {
+              "totalCount": 0
+            },
+            "reactions": {
+              "totalCount": 0
+            },
+            "labels": {
+              "nodes": []
+            }
           },
           {
             "url": "fake_url2",
             "createdAt": "2011-01-26T19:01:12Z",
-            "closedAt": "2011-01-26T19:03:12Z"
+            "closedAt": "2011-01-26T19:03:12Z",
+            "comments": {
+              "totalCount": 1
+            },
+            "reactions": {
+              "totalCount": 2
+            },
+            "labels": {
+              "nodes": []
+            }
           }
         ],
         "pageInfo": {

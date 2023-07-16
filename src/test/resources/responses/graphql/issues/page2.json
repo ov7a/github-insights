@@ -6,17 +6,70 @@
         "nodes": [
           {
             "url": "issue4_url",
-            "createdAt": "2012-03-28T20:05:45Z"
+            "createdAt": "2012-03-28T20:05:45Z",
+            "comments": {
+              "totalCount": 100
+            },
+            "reactions": {
+              "totalCount": 12
+            },
+            "labels": {
+              "nodes": [
+                {
+                  "name": "a:regression",
+                  "color": "0e8a16"
+                },
+                {
+                  "name": "in:thinking",
+                  "color": "d4c5f9"
+                },
+                {
+                  "name": "in:brain",
+                  "color": "d4c5f9"
+                }
+              ]
+            }
           },
           {
             "url": "issue5_url",
             "createdAt": "2012-03-30T20:05:45Z",
-            "closedAt": "2012-04-30T10:05:17Z"
+            "closedAt": "2012-04-30T10:05:17Z",
+            "comments": {
+              "totalCount": 100
+            },
+            "reactions": {
+              "totalCount": 12
+            },
+            "labels": {
+              "nodes": [
+                {
+                  "name": "a:regression",
+                  "color": "0e8a16"
+                },
+                {
+                  "name": "in:thinking",
+                  "color": "d4c5f9"
+                },
+                {
+                  "name": "in:brain",
+                  "color": "d4c5f9"
+                }
+              ]
+            }
           },
           {
             "url": "issue6_url",
             "createdAt": "2012-02-10T21:05:45Z",
-            "closedAt": "2012-02-11T11:05:17Z"
+            "closedAt": "2012-02-11T11:05:17Z",
+            "comments": {
+              "totalCount": 0
+            },
+            "reactions": {
+              "totalCount": 0
+            },
+            "labels": {
+              "nodes": []
+            }
           }
         ],
         "pageInfo": {

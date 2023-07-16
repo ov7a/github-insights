@@ -6,15 +6,69 @@
         "nodes": [
           {
             "url": "pull1_url",
-            "createdAt": "2012-03-28T20:05:45Z"
+            "createdAt": "2012-03-28T20:05:45Z",
+            "comments": {
+              "totalCount": 10
+            },
+            "reactions": {
+              "totalCount": 11
+            },
+            "labels": {
+              "nodes": [
+                {
+                  "name": "a:feature",
+                  "color": "0e8a16"
+                },
+                {
+                  "name": "in:jvm-ecosystem",
+                  "color": "d4c5f9"
+                }
+              ]
+            }
           },
           {
             "url": "pull2_url",
-            "createdAt": "2012-03-30T20:06:45Z"
+            "createdAt": "2012-03-30T20:06:45Z",
+            "comments": {
+              "totalCount": 13
+            },
+            "reactions": {
+              "totalCount": 14
+            },
+            "labels": {
+              "nodes": [
+                {
+                  "name": "a:bug",
+                  "color": "0e8a16"
+                },
+                {
+                  "name": "in:brains",
+                  "color": "d4c5f9"
+                }
+              ]
+            }
           },
           {
             "url": "pull3_url",
-            "createdAt": "2012-03-30T20:07:45Z"
+            "createdAt": "2012-03-30T20:07:45Z",
+            "comments": {
+              "totalCount": 100
+            },
+            "reactions": {
+              "totalCount": 10
+            },
+            "labels": {
+              "nodes": [
+                {
+                  "name": "a:regression",
+                  "color": "0e8a16"
+                },
+                {
+                  "name": "in:thinking",
+                  "color": "d4c5f9"
+                }
+              ]
+            }
           }
         ],
         "pageInfo": {

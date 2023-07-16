@@ -6,11 +6,15 @@ import ru.ov7a.github.insights.fetcher.graphql.AbstractGraphQLClient
 
 class IssuesClient(jsonClient: JsonClient) : AbstractGraphQLClient<IssueResponse>(jsonClient) {
     override val name = "issues"
-    override fun getRequestFields(): String = "url, createdAt, closedAt"
+
+    override val customFields = ""
 
     override fun IssueResponse.convert() = IssueLike(
         url = url,
         createdAt = createdAt,
         closedAt = closedAt,
+        labels = labels.convert(),
+        comments = comments.totalCount,
+        reactions = reactions.totalCount,
     )
 }

@@ -66,5 +66,8 @@ class CalculateTest {
         createdAt = Instant.fromEpochMilliseconds(createdAt),
         closedAt = closedAt?.let { Instant.fromEpochMilliseconds(it) },
         url = "don't care",
+        labels = emptyList(),
+        reactions = -1,
+        comments = -1,
     )
 }

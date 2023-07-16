@@ -18,7 +18,9 @@ class ProgressReporterTests {
 
     private fun pullRequestsBatch(total: Int, size: Int) = DataBatch(
         totalCount = total,
-        data = List(size) { IssueLike(url = "url", createdAt = Clock.System.now()) }
+        data = List(size) {
+            IssueLike(url = "url", createdAt = Clock.System.now(), labels = emptyList(), comments = 0, reactions = 0)
+        }
     )
 
     @Test

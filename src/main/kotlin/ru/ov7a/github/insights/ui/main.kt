@@ -5,13 +5,18 @@ import kotlin.time.ExperimentalTime
 import kotlinx.browser.window
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import org.w3c.dom.url.URLSearchParams
+import ru.ov7a.github.insights.calculation.labels.calculateLabelsGraph
 import ru.ov7a.github.insights.calculation.stats.calculateResolveTime
 import ru.ov7a.github.insights.domain.FetchParameters
 import ru.ov7a.github.insights.domain.Filters
+import ru.ov7a.github.insights.domain.input.IssueLike
 import ru.ov7a.github.insights.domain.input.RequestType
 import ru.ov7a.github.insights.ui.elements.ProgressBarReporter
+import ru.ov7a.github.insights.ui.presentation.LabelsPresenter
+import ru.ov7a.github.insights.ui.presentation.Presenter
 import ru.ov7a.github.insights.ui.presentation.StatsPresenter
 
 private val context = Context()
@@ -39,7 +44,7 @@ fun init() {
 }
 
 @JsExport
-@OptIn(DelicateCoroutinesApi::class, ExperimentalJsExport::class, ExperimentalTime::class)
+@OptIn(ExperimentalJsExport::class, ExperimentalTime::class)
 fun calculateAndPresent() = catchValidationError {
     val repositoryId = context.inputs.getRepositoryId() ?: throw ValidationException(
         "Can't parse input. Please, provide it as url to repository or as %user%/%repositoryName%"
@@ -48,9 +53,6 @@ fun calculateAndPresent() = catchValidationError {
         "Please, authorize"
     )
     val requestType = context.inputs.getRequestType()
-    val (calculator, presenter) = when (requestType) {
-        RequestType.RESOLVE_TIME -> ::calculateResolveTime to StatsPresenter
-    }
     val filters = Filters(
         includeLabels = context.inputs.getIncludes(),
         states = context.inputs.getStates(),
@@ -64,12 +66,24 @@ fun calculateAndPresent() = catchValidationError {
     )
     context.presentation.setLoading()
 
+    when (requestType) {
+        RequestType.RESOLVE_TIME -> calculateAndPresent(fetchParameters, ::calculateResolveTime, StatsPresenter)
+        RequestType.LABELS -> calculateAndPresent(fetchParameters, ::calculateLabelsGraph, LabelsPresenter)
+    }
+}
+
+@OptIn(DelicateCoroutinesApi::class)
+private fun <Data : Any> calculateAndPresent(
+    fetchParameters: FetchParameters,
+    calculator: suspend (Flow<IssueLike>) -> Data?,
+    presenter: Presenter<Data>,
+) {
     GlobalScope.launch {
         val reporter = ProgressBarReporter()
 
         val result = getAndCalculate(fetchParameters, reporter, calculator = calculator)
 
-        context.presentation.present(result, presenter)
+        context.presentation.present(fetchParameters, result, presenter)
     }
 }
 

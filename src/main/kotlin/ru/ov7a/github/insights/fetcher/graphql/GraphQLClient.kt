@@ -14,6 +14,7 @@ import ru.ov7a.github.insights.domain.FetchParameters
 import ru.ov7a.github.insights.domain.Filters
 import ru.ov7a.github.insights.domain.input.DataBatch
 import ru.ov7a.github.insights.domain.input.IssueLike
+import ru.ov7a.github.insights.domain.input.Label
 import ru.ov7a.github.insights.domain.input.RepositoryId
 import ru.ov7a.github.insights.fetcher.Client
 import ru.ov7a.github.insights.fetcher.JsonClient
@@ -24,7 +25,7 @@ abstract class AbstractGraphQLClient<Response>(
 
     protected abstract val name: String
     protected abstract fun Response.convert(): IssueLike
-    protected abstract fun getRequestFields(): String
+    protected abstract val customFields: String
 
     private fun createQuery(
         repositoryId: RepositoryId,
@@ -46,7 +47,11 @@ abstract class AbstractGraphQLClient<Response>(
             $name($filter) {
               totalCount
               nodes {
-                ${getRequestFields()}
+                $customFields
+                url, createdAt, closedAt
+                comments { totalCount }
+                reactions { totalCount }
+                labels(first: 100) { nodes { name, color } }
               }
               pageInfo { startCursor, hasPreviousPage }
             }
@@ -73,6 +78,8 @@ abstract class AbstractGraphQLClient<Response>(
         totalCount = totalCount,
         data = this.nodes.map { it.convert() }
     )
+
+    protected fun LabelsResponse.convert() = nodes.map { Label(it.name, "#" + it.color) }
 
     override suspend fun fetchAll(fetchParameters: FetchParameters): Flow<DataBatch> =
         flow {

@@ -3,7 +3,11 @@
     pullRequests(last: 2, states:[OPEN], labels:["a:bug","a:feature"]) {
       totalCount
       nodes {
-        url, createdAt, mergedAt, closedAt
+        mergedAt
+        url, createdAt, closedAt
+        comments { totalCount }
+        reactions { totalCount }
+        labels(first: 100) { nodes { name, color } }
       }
       pageInfo { startCursor, hasPreviousPage }
     }

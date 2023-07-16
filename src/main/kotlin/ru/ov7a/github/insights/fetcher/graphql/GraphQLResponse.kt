@@ -39,3 +39,19 @@ data class PageInfoResponse(
 data class ErrorResponse(
     val message: String,
 )
+
+@Serializable
+data class CountResponse(
+    val totalCount: Int,
+)
+
+@Serializable
+data class LabelsResponse(
+    val nodes: List<LabelResponse>,
+)
+
+@Serializable
+data class LabelResponse(
+    val name: String,
+    val color: String,
+)

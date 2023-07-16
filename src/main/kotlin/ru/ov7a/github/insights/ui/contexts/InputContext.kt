@@ -135,7 +135,8 @@ class InputContext {
         }
 
         private enum class InputRequestType(val value: String, val type: RequestType) {
-            RESOLVE_TIME("resolve_time", RequestType.RESOLVE_TIME);
+            RESOLVE_TIME("resolve_time", RequestType.RESOLVE_TIME),
+            LABELS("labels", RequestType.LABELS);
 
             companion object {
                 val DEFAULT = RESOLVE_TIME

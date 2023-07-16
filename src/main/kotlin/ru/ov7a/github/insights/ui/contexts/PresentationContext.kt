@@ -4,6 +4,7 @@ import io.ktor.client.plugins.ClientRequestException
 import kotlinx.browser.document
 import kotlinx.html.dom.create
 import kotlinx.html.js.span
+import ru.ov7a.github.insights.domain.FetchParameters
 import ru.ov7a.github.insights.fetcher.graphql.GraphQLError
 import ru.ov7a.github.insights.ui.elements.getHtmlElement
 import ru.ov7a.github.insights.ui.elements.hide
@@ -24,19 +25,27 @@ class PresentationContext {
         failureResultBlock.hide()
     }
 
-    fun <Data : Any> present(result: Result<Data?>, dataPresenter: Presenter<Data>) {
+    fun <Data : Any> present(
+        fetchParameters: FetchParameters,
+        result: Result<Data?>,
+        dataPresenter: Presenter<Data>
+    ) {
         progressBarBlock.hide()
 
         when {
-            result.isSuccess -> presentSuccess(result.getOrNull(), dataPresenter)
+            result.isSuccess -> presentSuccess(fetchParameters, result.getOrNull(), dataPresenter)
             result.isFailure -> presentFailure(result.exceptionOrNull())
         }
     }
 
-    private fun <Data : Any> presentSuccess(stats: Data?, dataPresenter: Presenter<Data>) {
-        if (stats != null) {
+    private fun <Data : Any> presentSuccess(
+        fetchParameters: FetchParameters,
+        data: Data?,
+        dataPresenter: Presenter<Data>
+    ) {
+        if (data != null) {
             successResultBlock.apply {
-                setContent(dataPresenter.render(stats))
+                setContent(dataPresenter.render(fetchParameters, data))
                 show()
             }
         } else {
