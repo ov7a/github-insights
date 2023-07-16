@@ -1,15 +1,18 @@
 package ru.ov7a.github.insights.ui
 
-import getAndCalculateStats
+import getAndCalculate
 import kotlin.time.ExperimentalTime
 import kotlinx.browser.window
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.w3c.dom.url.URLSearchParams
+import ru.ov7a.github.insights.calculation.stats.calculateResolveTime
 import ru.ov7a.github.insights.domain.FetchParameters
 import ru.ov7a.github.insights.domain.Filters
+import ru.ov7a.github.insights.domain.input.RequestType
 import ru.ov7a.github.insights.ui.elements.ProgressBarReporter
+import ru.ov7a.github.insights.ui.presentation.StatsPresenter
 
 private val context = Context()
 
@@ -44,6 +47,10 @@ fun calculateAndPresent() = catchValidationError {
     val authorization = context.authorization.getAuthorization() ?: throw ValidationException(
         "Please, authorize"
     )
+    val requestType = context.inputs.getRequestType()
+    val (calculator, presenter) = when (requestType) {
+        RequestType.RESOLVE_TIME -> ::calculateResolveTime to StatsPresenter
+    }
     val filters = Filters(
         includeLabels = context.inputs.getIncludes(),
         states = context.inputs.getStates(),
@@ -60,9 +67,9 @@ fun calculateAndPresent() = catchValidationError {
     GlobalScope.launch {
         val reporter = ProgressBarReporter()
 
-        val result = getAndCalculateStats(fetchParameters, reporter)
+        val result = getAndCalculate(fetchParameters, reporter, calculator = calculator)
 
-        context.presentation.present(result)
+        context.presentation.present(result, presenter)
     }
 }
 
@@ -91,6 +98,5 @@ fun copyShareLink() {
 @JsExport
 fun updateType() {
     val itemType = context.inputs.getItemType()
-    context.presentation.updateHint(itemType)
     context.inputs.updateOptions(itemType)
 }

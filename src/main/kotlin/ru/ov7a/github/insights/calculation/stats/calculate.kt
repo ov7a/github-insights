@@ -16,6 +16,9 @@ fun getDuration(issueLike: IssueLike, now: Instant): Duration =
     (issueLike.closedAt ?: now) - issueLike.createdAt
 
 @OptIn(ExperimentalTime::class)
+suspend fun calculateResolveTime(data: Flow<IssueLike>) = calculateDurationStats(data)
+
+@OptIn(ExperimentalTime::class)
 suspend fun calculateDurationStats(
     data: Flow<IssueLike>,
     now: Instant = Clock.System.now()
@@ -26,7 +29,7 @@ suspend fun calculateDurationStats(
 }
 
 @ExperimentalTime
-private val statsGetters = listOf<Pair<String, (List<Duration>) -> Duration>>(
+private val statsGetters = listOf<Pair<String, (List<Duration>) -> Any>>(
     "0th percentile (minimum)" to { it.first() },
     "10th percentile" to { percentile(it, 10) },
     "20th percentile" to { percentile(it, 20) },
@@ -41,10 +44,11 @@ private val statsGetters = listOf<Pair<String, (List<Duration>) -> Duration>>(
     "99th percentile" to { percentile(it, 99) },
     "100th percentile (maximum)" to { values -> values.last() },
     "Average" to { it.reduce { a, b -> a + b }.times(1.0 / it.size) },
+    "Total count" to { it.size },
 )
 
 @ExperimentalTime
-suspend fun getStats(durations: Flow<Duration>): Stats? {
+private suspend fun getStats(durations: Flow<Duration>): Stats? {
     val sortedDurations = durations.toList().sorted()
 
     if (sortedDurations.isEmpty()) {

@@ -7,6 +7,7 @@ import org.w3c.dom.url.URLSearchParams
 import ru.ov7a.github.insights.domain.State
 import ru.ov7a.github.insights.domain.input.ItemType
 import ru.ov7a.github.insights.domain.input.RepositoryId
+import ru.ov7a.github.insights.domain.input.RequestType
 import ru.ov7a.github.insights.ui.elements.ChoiceElement
 import ru.ov7a.github.insights.ui.elements.getInput
 import ru.ov7a.github.insights.ui.elements.getSelector
@@ -16,6 +17,7 @@ import ru.ov7a.github.insights.ui.encodeURIComponent
 class InputContext {
     private val repoIdInput by lazy { getInput(REPO_INPUT_ID) }
     private val itemTypeInput by lazy { ChoiceElement(ITEM_TYPE_ID, InputItemType.DEFAULT.value) }
+    private val requestTypeInput by lazy { ChoiceElement(REQUEST_TYPE_ID, InputRequestType.DEFAULT.value) }
     private val labelsFilterInput by lazy { getInput(LABELS_FILTER_INPUT_ID) }
     private val statesFilterInput by lazy { getSelector(STATES_FILTER_INPUT_ID) }
     private val limitInput by lazy { getInput(LIMIT_INPUT_ID) }
@@ -28,6 +30,8 @@ class InputContext {
 
         itemTypeInput.value = params.get(ITEM_QUERY_PARAM) ?: InputItemType.DEFAULT.value
         updateOptions(getItemType())
+
+        requestTypeInput.value = params.get(REQUEST_QUERY_PARAM) ?: InputRequestType.DEFAULT.value
 
         params.get(INCLUDES_PARAM)?.let {
             labelsFilterInput.value = it
@@ -52,6 +56,8 @@ class InputContext {
 
     fun getItemType(): ItemType = InputItemType.forValue(itemTypeInput.value).type
 
+    fun getRequestType(): RequestType = InputRequestType.forValue(requestTypeInput.value).type
+
     fun getIncludes(): Set<String>? {
         return parseLabels(labelsFilterInput.value)
     }
@@ -66,13 +72,14 @@ class InputContext {
 
     fun createShareParams(): String {
         val query = mapOf(
-            REPO_QUERY_PARAM to encodeURIComponent(repoIdInput.value),
-            ITEM_QUERY_PARAM to encodeURIComponent(itemTypeInput.value),
-            INCLUDES_PARAM to encodeURIComponent(labelsFilterInput.value),
-            STATE_PARAM to encodeURIComponent(statesFilterInput.value),
-            LIMIT_PARAM to encodeURIComponent(limitInput.value),
+            REPO_QUERY_PARAM to repoIdInput.value,
+            ITEM_QUERY_PARAM to itemTypeInput.value,
+            REQUEST_QUERY_PARAM to requestTypeInput.value,
+            INCLUDES_PARAM to labelsFilterInput.value,
+            STATE_PARAM to statesFilterInput.value,
+            LIMIT_PARAM to limitInput.value,
         )
-        return query.entries.joinToString(prefix = "?", separator = "&") { "${it.key}=${it.value}" }
+        return query.entries.joinToString(prefix = "?", separator = "&") { "${it.key}=${encodeURIComponent(it.value)}" }
     }
 
     fun updateOptions(itemType: ItemType) {
@@ -105,12 +112,14 @@ class InputContext {
     companion object {
         private const val REPO_INPUT_ID = "repository_id"
         private const val ITEM_TYPE_ID = "item_type"
+        private const val REQUEST_TYPE_ID = "request"
         private const val LABELS_FILTER_INPUT_ID = "includes"
         private const val STATES_FILTER_INPUT_ID = "states"
         private const val LIMIT_INPUT_ID = "limit"
 
         private const val REPO_QUERY_PARAM = "repo"
         private const val ITEM_QUERY_PARAM = "item_type"
+        private const val REQUEST_QUERY_PARAM = "request"
         private const val INCLUDES_PARAM = "include"
         private const val STATE_PARAM = "state"
         private const val LIMIT_PARAM = "limit"
@@ -121,6 +130,15 @@ class InputContext {
 
             companion object {
                 val DEFAULT = PULL
+                fun forValue(value: String) = values().single { it.value == value }
+            }
+        }
+
+        private enum class InputRequestType(val value: String, val type: RequestType) {
+            RESOLVE_TIME("resolve_time", RequestType.RESOLVE_TIME);
+
+            companion object {
+                val DEFAULT = RESOLVE_TIME
                 fun forValue(value: String) = values().single { it.value == value }
             }
         }

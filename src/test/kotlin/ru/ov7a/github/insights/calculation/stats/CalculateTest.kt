@@ -49,6 +49,7 @@ class CalculateTest {
             Statistic("99th percentile", 4895.milliseconds),
             Statistic("100th percentile (maximum)", 5000.milliseconds),
             Statistic("Average", 2000.milliseconds),
+            Statistic("Total count", 4)
         )
     }
 

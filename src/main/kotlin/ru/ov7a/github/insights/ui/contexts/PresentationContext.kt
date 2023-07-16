@@ -1,32 +1,21 @@
 package ru.ov7a.github.insights.ui.contexts
 
 import io.ktor.client.plugins.ClientRequestException
-import kotlin.time.Duration
-import kotlin.time.ExperimentalTime
 import kotlinx.browser.document
 import kotlinx.html.dom.create
 import kotlinx.html.js.span
-import kotlinx.html.js.table
-import kotlinx.html.tbody
-import kotlinx.html.td
-import kotlinx.html.tr
-import org.w3c.dom.HTMLTableElement
-import ru.ov7a.github.insights.domain.input.ItemType
-import ru.ov7a.github.insights.domain.output.Stats
 import ru.ov7a.github.insights.fetcher.graphql.GraphQLError
 import ru.ov7a.github.insights.ui.elements.getHtmlElement
 import ru.ov7a.github.insights.ui.elements.hide
 import ru.ov7a.github.insights.ui.elements.setContent
 import ru.ov7a.github.insights.ui.elements.show
-import ru.ov7a.github.insights.ui.humanReadableDuration
+import ru.ov7a.github.insights.ui.presentation.Presenter
 
-@OptIn(ExperimentalTime::class)
 class PresentationContext {
     private val progressBarBlock by lazy { getHtmlElement(LOADING_BLOCK_ID) }
     private val successResultBlock by lazy { getHtmlElement(SUCCESS_RESULT_BLOCK_ID) }
     private val noDataResultBlock by lazy { getHtmlElement(NO_DATA_RESULT_BLOCK_ID) }
     private val failureResultBlock by lazy { getHtmlElement(FAILURE_RESULT_BLOCK_ID) }
-    private val helpHint by lazy { getHtmlElement(HELP_HINT_ID) }
 
     fun setLoading() {
         progressBarBlock.show()
@@ -35,50 +24,25 @@ class PresentationContext {
         failureResultBlock.hide()
     }
 
-    fun present(result: Result<Stats?>) {
+    fun <Data : Any> present(result: Result<Data?>, dataPresenter: Presenter<Data>) {
         progressBarBlock.hide()
 
         when {
-            result.isSuccess -> presentSuccess(result.getOrNull())
+            result.isSuccess -> presentSuccess(result.getOrNull(), dataPresenter)
             result.isFailure -> presentFailure(result.exceptionOrNull())
         }
     }
 
-    fun updateHint(itemType: ItemType) {
-        val text = when (itemType) {
-            ItemType.PULL -> "How long will your pull request be reviewed? Get an estimate!"
-            ItemType.ISSUE -> "How long should you wait until your issue is resolved? Get an estimate!"
-        }
-        helpHint.textContent = text
-    }
-
-    private fun presentSuccess(stats: Stats?) {
+    private fun <Data : Any> presentSuccess(stats: Data?, dataPresenter: Presenter<Data>) {
         if (stats != null) {
             successResultBlock.apply {
-                setContent(generateResultsHtml(stats))
+                setContent(dataPresenter.render(stats))
                 show()
             }
         } else {
             noDataResultBlock.show()
         }
     }
-
-    private fun generateResultsHtml(stats: Stats): HTMLTableElement =
-        document.create.table {
-            tbody {
-                stats.map { stat ->
-                    tr {
-                        td { +stat.displayName }
-                        td {
-                            +when (stat.value) {
-                                is Duration -> humanReadableDuration(stat.value)
-                                else -> stat.value.toString()
-                            }
-                        }
-                    }
-                }
-            }
-        }
 
     private fun presentFailure(exception: Throwable?) {
         failureResultBlock.apply {
@@ -100,7 +64,6 @@ class PresentationContext {
         const val SUCCESS_RESULT_BLOCK_ID = "results_success"
         const val NO_DATA_RESULT_BLOCK_ID = "results_no_data"
         const val FAILURE_RESULT_BLOCK_ID = "results_error"
-        const val HELP_HINT_ID = "help"
     }
 }
 

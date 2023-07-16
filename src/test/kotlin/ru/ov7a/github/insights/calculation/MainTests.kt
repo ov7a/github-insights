@@ -1,6 +1,6 @@
 package ru.ov7a.github.insights.calculation
 
-import getAndCalculateStats
+import getAndCalculate
 import io.kotest.assertions.withClue
 import io.kotest.matchers.should
 import io.kotest.matchers.shouldBe
@@ -12,6 +12,7 @@ import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpStatusCode
 import kotlin.test.Test
 import kotlin.time.ExperimentalTime
+import ru.ov7a.github.insights.calculation.stats.calculateResolveTime
 import ru.ov7a.github.insights.domain.FetchParameters
 import ru.ov7a.github.insights.domain.Filters
 import ru.ov7a.github.insights.domain.ProgressReporter
@@ -33,6 +34,7 @@ class MainTests {
     )
 
     private val authHeader = "Basic someAuth"
+    private val calculator = ::calculateResolveTime
 
     @Test
     fun should_collect_stats() = runTest {
@@ -44,7 +46,7 @@ class MainTests {
 
         val reporter = ProgressReporter()
 
-        val result = getAndCalculateStats(
+        val result = getAndCalculate(
             FetchParameters(
                 ItemType.PULL,
                 RepositoryId("octocat", "Hello-World"),
@@ -52,7 +54,8 @@ class MainTests {
                 authHeader,
             ),
             reporter,
-            client
+            client,
+            calculator
         )
         withClue(result) {
             result.isSuccess shouldBe true
@@ -70,7 +73,7 @@ class MainTests {
 
         val reporter = ProgressReporter()
 
-        val result = getAndCalculateStats(
+        val result = getAndCalculate(
             FetchParameters(
                 ItemType.PULL,
                 RepositoryId("octocat", "Hello-World"),
@@ -78,7 +81,8 @@ class MainTests {
                 authHeader,
             ),
             reporter,
-            client
+            client,
+            calculator
         )
         withClue(result) {
             result.isFailure shouldBe true
@@ -93,7 +97,7 @@ class MainTests {
         )
         val reporter = ProgressReporter()
 
-        val result = getAndCalculateStats(
+        val result = getAndCalculate(
             FetchParameters(
                 ItemType.PULL,
                 RepositoryId("octocat", "Hello-World"),
@@ -101,7 +105,8 @@ class MainTests {
                 authHeader,
             ),
             reporter,
-            client
+            client,
+            calculator
         )
 
         withClue(result) {
