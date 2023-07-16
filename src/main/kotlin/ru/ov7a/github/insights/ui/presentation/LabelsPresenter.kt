@@ -14,7 +14,9 @@ import kotlinx.html.th
 import kotlinx.html.thead
 import kotlinx.html.tr
 import org.w3c.dom.HTMLElement
+import ru.ov7a.github.insights.calculation.labels.Edge
 import ru.ov7a.github.insights.calculation.labels.LabelsGraph
+import ru.ov7a.github.insights.calculation.labels.WeightedLabel
 import ru.ov7a.github.insights.domain.FetchParameters
 import ru.ov7a.github.insights.domain.input.Color
 import ru.ov7a.github.insights.domain.input.ItemType
@@ -33,15 +35,27 @@ object LabelsPresenter : Presenter<LabelsGraph> {
             p {
                 +"Total ${itemName}s: ${data.total()}"
             }
-            a {
-                val csv = entries.joinToString(prefix = "Label,Number of ${itemName}s,Score\n", separator = "\n") {
-                    "${it.name.replace(",", "\\,")},${it.items},${it.score}"
+            p {
+                a {
+                    val csv = entries.joinToString(prefix = "Label,Number of ${itemName}s,Score\n", separator = "\n") {
+                        "${it.name.replace(",", "\\,")},${it.items},${it.score}"
+                    }
+                    createDownloadLink(
+                        data = csv,
+                        fileName = "${repositoryId.owner}_${repositoryId.name}_${itemName}s_label_stats.csv",
+                    )
+                    +"Download stats as .csv"
                 }
-                createDownloadLink(
-                    data = csv,
-                    fileName = "${repositoryId.owner}_${repositoryId.name}_${itemName}s_label_stats.csv",
-                )
-                +"Download as csv"
+            }
+            p {
+                a {
+                    val dot = getDotGraph(nodes = entries, edges = data.edges())
+                    createDownloadLink(
+                        data = dot,
+                        fileName = "${repositoryId.owner}_${repositoryId.name}_${itemName}s_labels.dot",
+                    )
+                    +"Download graph as .dot"
+                }
             }
             table {
                 thead {
@@ -108,5 +122,21 @@ object LabelsPresenter : Presenter<LabelsGraph> {
     ) {
         href = "data:text/plain;charset=utf-8," + encodeURIComponent(data)
         attributes["download"] = fileName
+    }
+
+    private fun getDotGraph(
+        nodes: List<WeightedLabel>,
+        edges: List<Edge>,
+    ): String {
+        val builder = StringBuilder()
+        builder.appendLine("graph G {")
+        nodes.forEach {
+            builder.appendLine("  \"${it.name}\" [size=${it.score}, color=${it.color}, count=${it.items}]")
+        }
+        edges.forEach {
+            builder.appendLine("  \"${it.source}\" -- \"${it.target}\" [weight=${it.weight}]")
+        }
+        builder.appendLine("}")
+        return builder.toString()
     }
 }
