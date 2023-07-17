@@ -1,6 +1,7 @@
 package ru.ov7a.github.insights.ui.elements
 
 import kotlinx.browser.document
+import org.w3c.dom.HTMLDetailsElement
 import org.w3c.dom.HTMLElement
 import org.w3c.dom.HTMLInputElement
 import org.w3c.dom.HTMLSelectElement
@@ -12,6 +13,10 @@ fun getInput(id: String): HTMLInputElement =
 fun getSelector(id: String): HTMLSelectElement =
     getHtmlElement(id) as? HTMLSelectElement?
         ?: throw RuntimeException("Element $id is not select")
+
+fun getSpoiler(id: String): HTMLDetailsElement =
+    getHtmlElement(id) as? HTMLDetailsElement?
+        ?: throw RuntimeException("Element $id is not details")
 
 fun getHtmlElement(id: String): HTMLElement =
     document.getElementById(id) as HTMLElement? ?: throw RuntimeException("Element not found: $id")

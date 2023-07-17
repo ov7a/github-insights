@@ -68,8 +68,8 @@
     </div>
 
     <div class="auth_block">
-        <details class="spoiler">
-            <summary class="spoiler">Authorization</summary>
+        <details class="spoiler" id="auth">
+            <summary class="spoiler" id="auth_hint">Authorization</summary>
 
             <form id="unauthorized" action="javascript:void(0)">
                 <p>
@@ -89,7 +89,6 @@
 
             <div id="authorized" hidden>
                 <p>
-                    <span>You are authorized as <span id="login"></span></span>
                     <button onclick="github_insights.ru.ov7a.github.insights.ui.resetAuthorization()">reset</button>
                 </p>
             </div>
