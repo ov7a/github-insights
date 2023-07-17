@@ -47,7 +47,7 @@ fun init() {
 @OptIn(ExperimentalJsExport::class, ExperimentalTime::class)
 fun calculateAndPresent() = catchValidationError {
     val repositoryId = context.inputs.getRepositoryId() ?: throw ValidationException(
-        "Can't parse input. Please, provide it as url to repository or as %user%/%repositoryName%"
+        "Can't parse repository. Please, provide it as url to repository or as %user%/%repositoryName%"
     )
     val authorization = context.authorization.getAuthorization() ?: throw ValidationException(
         "Please, authorize"
