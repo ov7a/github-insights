@@ -56,17 +56,10 @@
                     <input type="number" id="limit" name="limit" placeholder="-1"/>
                 </p>
             </details>
-            <p>
-                <button type="submit" onclick="github_insights.ru.ov7a.github.insights.ui.calculateAndPresent()">
-                    calculate!
-                </button>
-                <button onclick="github_insights.ru.ov7a.github.insights.ui.copyShareLink()">
-                    copy link
-                </button>
-            </p>
         </form>
     </div>
 
+    <p></p>
     <div class="auth_block">
         <details class="spoiler" id="auth">
             <summary class="spoiler" id="auth_hint">Authorization</summary>
@@ -116,7 +109,17 @@
                 </details>
             </div>
         </details>
+    </div>
 
+    <div class="actions">
+        <p>
+            <button type="submit" onclick="github_insights.ru.ov7a.github.insights.ui.calculateAndPresent()">
+                calculate!
+            </button>
+            <button onclick="github_insights.ru.ov7a.github.insights.ui.copyShareLink()">
+                copy link
+            </button>
+        </p>
     </div>
 
     <div class="output">
