@@ -10,6 +10,9 @@ Build it with `build` gradle task.
 
 [Demo](https://ov7a.github.io/github_insights)
 
+You can also use it in a command-line.
+Grab the executable from [build/bin/native/releaseExecutable/](build/bin/native/releaseExecutable/)
+
 Sample outputs:
 
 ![](screenshot.png)
