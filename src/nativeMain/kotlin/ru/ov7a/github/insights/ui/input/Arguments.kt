@@ -11,10 +11,11 @@ import ru.ov7a.github.insights.domain.input.ItemType
 import ru.ov7a.github.insights.domain.input.RepositoryId
 import ru.ov7a.github.insights.domain.input.RequestType
 import ru.ov7a.github.insights.ui.parseStringsSet
+import ru.ov7a.github.insights.ui.presentation.fail
 
 private const val TOKEN_ENV = "GITHUB_TOKEN"
 fun parseArguments(args: Array<String>): Pair<FetchParameters, RequestType> {
-    val token = getenv(TOKEN_ENV)?.toKString() ?: throw Exception(
+    val token = getenv(TOKEN_ENV)?.toKString() ?: fail(
         """
         Please provide GitHub token as $TOKEN_ENV environment variable.
         Get your token here: https://github.com/settings/tokens
@@ -37,7 +38,7 @@ fun parseArguments(args: Array<String>): Pair<FetchParameters, RequestType> {
     val auth = "Bearer $token"
 
     val repo = RepositoryId.parse(repositoryId)
-        ?: throw Exception("Can't parse repository. Please, provide it as url to repository or as %user%/%repositoryName%")
+        ?: fail("Can't parse repository. Please, provide it as url to repository or as %user%/%repositoryName%")
 
     val statesFilter = states?.let(::parseStringsSet)?.map { State.valueOf(it) }?.toSet()
     val labelsFilter = includeLabels?.let(::parseStringsSet)

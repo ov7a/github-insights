@@ -15,6 +15,8 @@ import ru.ov7a.github.insights.ui.presentation.LabelsPresenter
 import ru.ov7a.github.insights.ui.presentation.Presenter
 import ru.ov7a.github.insights.ui.presentation.StatsPresenter
 import ru.ov7a.github.insights.ui.presentation.TextProgressReporter
+import ru.ov7a.github.insights.ui.presentation.fail
+import ru.ov7a.github.insights.ui.presentation.printlnErr
 
 @OptIn(ExperimentalTime::class)
 fun main(args: Array<String>) = runBlocking {
@@ -50,10 +52,10 @@ private fun <Data : Any> present(
             if (data != null) {
                 dataPresenter.print(fetchParameters, data)
             } else {
-                println("No matching results were found in this repository")
+                printlnErr("No matching results were found in this repository")
             }
         }
 
-        result.isFailure -> println(extractErrorMessage(result.exceptionOrNull()))
+        result.isFailure -> fail(extractErrorMessage(result.exceptionOrNull()))
     }
 }
