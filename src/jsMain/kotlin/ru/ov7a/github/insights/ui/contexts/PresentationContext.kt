@@ -1,15 +1,14 @@
 package ru.ov7a.github.insights.ui.contexts
 
-import io.ktor.client.plugins.ClientRequestException
 import kotlinx.browser.document
 import kotlinx.html.dom.create
 import kotlinx.html.js.span
 import ru.ov7a.github.insights.domain.FetchParameters
-import ru.ov7a.github.insights.fetcher.graphql.GraphQLError
 import ru.ov7a.github.insights.ui.elements.getHtmlElement
 import ru.ov7a.github.insights.ui.elements.hide
 import ru.ov7a.github.insights.ui.elements.setContent
 import ru.ov7a.github.insights.ui.elements.show
+import ru.ov7a.github.insights.ui.extractErrorMessage
 import ru.ov7a.github.insights.ui.presentation.Presenter
 
 class PresentationContext {
@@ -57,11 +56,7 @@ class PresentationContext {
         failureResultBlock.apply {
             setContent(
                 document.create.span {
-                    +when (exception) {
-                        is ClientRequestException -> "Error during fetching data: ${exception.response.status.description}"
-                        is GraphQLError -> "Error during fetching data: ${exception.message}"
-                        else -> "Error happened: ${exception?.message ?: "Unknown error"}"
-                    }
+                    +extractErrorMessage(exception)
                 }
             )
             show()
@@ -75,6 +70,3 @@ class PresentationContext {
         const val FAILURE_RESULT_BLOCK_ID = "results_error"
     }
 }
-
-
-

@@ -12,10 +12,11 @@ import io.ktor.http.HttpMethod
 import io.ktor.http.HttpStatusCode
 import io.ktor.utils.io.charsets.Charsets
 import io.ktor.utils.io.charsets.name
-import kotlin.js.json
 import kotlin.test.Test
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.toList
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonPrimitive
 import ru.ov7a.github.insights.Endpoint
 import ru.ov7a.github.insights.domain.FetchParameters
 import ru.ov7a.github.insights.domain.Filters
@@ -52,9 +53,9 @@ abstract class AbstractGraphQLClientTests {
             headers = defaultRequestHeaders
         )
 
-        fun graphQlQuery(resource: String) = JSON.stringify(
-            json("query" to loadResource(resource))
-        )
+        fun graphQlQuery(resource: String) = JsonObject(
+            mapOf("query" to JsonPrimitive(loadResource(resource)))
+        ).toString()
 
         fun validResponse(resource: String) = response(
             content = loadResource(resource),

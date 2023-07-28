@@ -1,26 +1,30 @@
 package ru.ov7a.github.insights.fetcher.graphql
 
-import kotlinx.serialization.Polymorphic
+import kotlin.reflect.KProperty1
 import kotlinx.serialization.Serializable
+import ru.ov7a.github.insights.fetcher.graphql.issues.IssueResponse
+import ru.ov7a.github.insights.fetcher.graphql.pulls.PullRequestResponse
 
 @Serializable
-data class GraphQLResponse<T>(
-    private val data: DataResponse<T>? = null,
+data class GraphQLResponse(
+    private val data: DataResponse? = null,
     val errors: List<ErrorResponse> = emptyList(),
 ) {
-    fun data(): DataPage<T> = data?.repository?.page()
+    fun <T> data(field: KProperty1<RepositoryResponse, DataPage<T>?>): DataPage<T> = data?.repository?.let(field)
         ?: throw GraphQLError(errors.firstOrNull()?.message ?: "Unknown error during fetching data")
 }
 
 @Serializable
-data class DataResponse<T>(
-    val repository: RepositoryResponse<T>? = null,
+data class DataResponse(
+    val repository: RepositoryResponse? = null,
 )
 
-@Polymorphic
-interface RepositoryResponse<T> {
-    fun page(): DataPage<T>
-}
+@Serializable
+data class RepositoryResponse(
+    // This solution is not the best, however previous one was also a crutch. At least this works in native.
+    val issues: DataPage<IssueResponse>? = null,
+    val pullRequests: DataPage<PullRequestResponse>? = null,
+)
 
 @Serializable
 data class DataPage<T>(

@@ -12,7 +12,6 @@ import io.ktor.http.Url
 import io.ktor.http.content.OutgoingContent
 import io.ktor.http.headersOf
 import io.ktor.http.takeFrom
-import org.w3c.xhr.XMLHttpRequest
 
 data class Endpoint(
     val url: Url,
@@ -73,10 +72,4 @@ fun response(
     respond(content, statusCode, HeadersImpl(headers))
 }
 
-fun loadResource(resource: String): String {
-    XMLHttpRequest().apply {
-        open("GET", "/base/$resource", async = false)
-        send()
-        return responseText
-    }
-}
+expect fun loadResource(resource: String): String

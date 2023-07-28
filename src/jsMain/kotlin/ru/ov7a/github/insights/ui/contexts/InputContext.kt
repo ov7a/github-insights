@@ -13,6 +13,7 @@ import ru.ov7a.github.insights.ui.elements.getInput
 import ru.ov7a.github.insights.ui.elements.getSelector
 import ru.ov7a.github.insights.ui.elements.setContent
 import ru.ov7a.github.insights.ui.encodeURIComponent
+import ru.ov7a.github.insights.ui.parseStringsSet
 
 class InputContext {
     private val repoIdInput by lazy { getInput(REPO_INPUT_ID) }
@@ -59,7 +60,7 @@ class InputContext {
     fun getRequestType(): RequestType = InputRequestType.forValue(requestTypeInput.value).type
 
     fun getIncludes(): Set<String>? {
-        return parseLabels(labelsFilterInput.value)
+        return parseStringsSet(labelsFilterInput.value)
     }
 
     fun getStates(): Set<State>? {
@@ -101,13 +102,6 @@ class InputContext {
             statesFilterInput.value = StateItemType.DEFAULT.name
         }
     }
-
-    private fun parseLabels(input: String): Set<String>? = input
-        .split(",")
-        .map { it.trim() }
-        .filter { it.isNotEmpty() }
-        .toSet()
-        .takeUnless { it.isEmpty() }
 
     companion object {
         private const val REPO_INPUT_ID = "repository_id"
@@ -160,5 +154,3 @@ class InputContext {
         }
     }
 }
-
-

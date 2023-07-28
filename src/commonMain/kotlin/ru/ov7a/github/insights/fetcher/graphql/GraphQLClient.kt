@@ -8,6 +8,7 @@ import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import io.ktor.http.contentType
 import kotlin.math.min
+import kotlin.reflect.KProperty1
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import ru.ov7a.github.insights.domain.FetchParameters
@@ -24,8 +25,9 @@ abstract class AbstractGraphQLClient<Response>(
 ) : Client {
 
     protected abstract val name: String
-    protected abstract fun Response.convert(): IssueLike
     protected abstract val customFields: String
+    protected abstract val responseField: KProperty1<RepositoryResponse, DataPage<Response>?>
+    protected abstract fun Response.convert(): IssueLike
 
     private fun createQuery(
         repositoryId: RepositoryId,
@@ -64,7 +66,7 @@ abstract class AbstractGraphQLClient<Response>(
         fetchParameters: FetchParameters,
         limit: Int,
         cursor: String?,
-    ): GraphQLResponse<Response> {
+    ): GraphQLResponse {
         return json.client.post(GRAPHQL_URL) {
             contentType(ContentType.Application.Json)
             setBody(createQuery(fetchParameters.repositoryId, fetchParameters.filters, limit, cursor))
@@ -84,14 +86,16 @@ abstract class AbstractGraphQLClient<Response>(
     override suspend fun fetchAll(fetchParameters: FetchParameters): Flow<DataBatch> =
         flow {
             val limit = fetchParameters.filters.limit
-            var data = fetch(fetchParameters, min(MAX_ITEMS_PER_QUERY, limit ?: MAX_ITEMS_PER_QUERY), null).data()
+            var data = fetch(fetchParameters, min(MAX_ITEMS_PER_QUERY, limit ?: MAX_ITEMS_PER_QUERY), null)
+                .data(responseField)
             val totalItemsToFetch = limit?.let { min(data.totalCount, it) } ?: data.totalCount
             val firstBatch = data.toBatch(totalItemsToFetch)
             emit(firstBatch)
 
             var itemsLeft: Int = totalItemsToFetch - firstBatch.data.size
             while (data.pageInfo.hasPreviousPage && itemsLeft > 0) {
-                data = fetch(fetchParameters, min(MAX_ITEMS_PER_QUERY, itemsLeft), data.pageInfo.startCursor).data()
+                data = fetch(fetchParameters, min(MAX_ITEMS_PER_QUERY, itemsLeft), data.pageInfo.startCursor)
+                    .data(responseField)
                 val batch = data.toBatch(totalItemsToFetch)
                 itemsLeft -= batch.data.size
                 emit(batch)
