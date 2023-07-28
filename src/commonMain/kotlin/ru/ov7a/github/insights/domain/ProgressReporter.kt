@@ -4,6 +4,8 @@ import ru.ov7a.github.insights.domain.input.DataBatch
 
 open class ProgressReporter {
 
+    suspend fun start() = report(0.0)
+
     open suspend fun report(value: Double) {
         // by default, do nothing
     }

@@ -7,7 +7,6 @@ import kotlinx.coroutines.runBlocking
 import ru.ov7a.github.insights.calculation.labels.calculateLabelsGraph
 import ru.ov7a.github.insights.calculation.stats.calculateResolveTime
 import ru.ov7a.github.insights.domain.FetchParameters
-import ru.ov7a.github.insights.domain.ProgressReporter
 import ru.ov7a.github.insights.domain.input.IssueLike
 import ru.ov7a.github.insights.domain.input.RequestType
 import ru.ov7a.github.insights.ui.extractErrorMessage
@@ -15,6 +14,7 @@ import ru.ov7a.github.insights.ui.input.parseArguments
 import ru.ov7a.github.insights.ui.presentation.LabelsPresenter
 import ru.ov7a.github.insights.ui.presentation.Presenter
 import ru.ov7a.github.insights.ui.presentation.StatsPresenter
+import ru.ov7a.github.insights.ui.presentation.TextProgressReporter
 
 @OptIn(ExperimentalTime::class)
 fun main(args: Array<String>) = runBlocking {
@@ -31,7 +31,8 @@ private suspend fun <Data : Any> calculateAndPresent(
     calculator: suspend (Flow<IssueLike>) -> Data?,
     presenter: Presenter<Data>,
 ) {
-    val reporter = ProgressReporter() // TODO
+    val reporter = TextProgressReporter()
+    reporter.start()
 
     val result = getAndCalculate(fetchParameters, reporter, calculator = calculator)
 

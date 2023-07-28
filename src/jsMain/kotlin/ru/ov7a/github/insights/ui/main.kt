@@ -80,6 +80,7 @@ private fun <Data : Any> calculateAndPresent(
 ) {
     GlobalScope.launch {
         val reporter = ProgressBarReporter()
+        reporter.start()
 
         val result = getAndCalculate(fetchParameters, reporter, calculator = calculator)
 
